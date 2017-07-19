@@ -7,7 +7,7 @@ var SftpWebpackPlugin = require('sftp-webpack-plugin')
 
 var webpack_config = {
     entry: {
-        
+        index: 'front-src/style/entry/index.js'
     },
     output: {
         path: __dirname + '/dest/deploy/', // 输出文件的保存路径
@@ -16,7 +16,7 @@ var webpack_config = {
     module: {
         loaders: [{
             test: /\.(js)$/,
-            loaders: 'babel-loader?presets[]=es2015'
+            loaders: 'es3ify-loader!babel-loader?presets[]=es2015-loose'
         }, {
             test: /\.(scss|sass)$/,
             loaders: 'style-loader!css-loader!postcss-loader!sass-loader'
