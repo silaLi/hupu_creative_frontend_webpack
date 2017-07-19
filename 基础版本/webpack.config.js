@@ -1,3 +1,5 @@
+var private_config = './config/private.config.json'
+
 var ToolsContainer = require('./tools.config.js');
 
 var CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -42,14 +44,16 @@ process.argv.forEach((argv) => {
     }
 })
 function deploy() {
-    webpack_config.plugins.push(new SftpWebpackPlugin({
-        port: '5277',
-        host: '192.168.9.78',
-        username: '',
-        password: '',
-        from: __dirname + '/dest/deploy/',
-        to: ''
-    }))
+    if (private_config.SftpWebpackPlugin.open === true) {
+        webpack_config.plugins.push(new SftpWebpackPlugin({
+            port: private_config.SftpWebpackPlugin.port,
+            host: private_config.SftpWebpackPlugin.host,
+            username: private_config.SftpWebpackPlugin.username,
+            password: private_config.SftpWebpackPlugin.password,
+            from: __dirname + '/dest/deploy/',
+            to: private_config.SftpWebpackPlugin.to
+        }))
+    }
 }
 
 module.exports = webpack_config;
