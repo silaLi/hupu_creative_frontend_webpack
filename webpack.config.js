@@ -1,4 +1,4 @@
-var private_config = require('./config/private.config.json');
+var private_config = require('./private_config/private.config.json');
 
 var ToolsContainer = require('./tools.config.js');
 
@@ -7,7 +7,8 @@ var SftpWebpackPlugin = require('sftp-webpack-plugin')
 
 var webpack_config = {
     entry: {
-        
+        mainJS: './front-src/style/entry/index.js',
+        mainTS: './front-src/style/entry/index.ts'
     },
     output: {
         path: __dirname + '/dest/deploy/', // 输出文件的保存路径
