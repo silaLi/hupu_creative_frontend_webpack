@@ -1,4 +1,4 @@
-var private_config = './config/private.config.json'
+var private_config = require('./config/private.config.json');
 
 var ToolsContainer = require('./tools.config.js');
 
