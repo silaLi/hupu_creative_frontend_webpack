@@ -1,5 +1,10 @@
-var private_config = require('./private_config/private.config.json');
-
+var private_config = null;
+try{
+    private_config = './private_config/private.config.json'
+    private_config = require(private_config);
+}catch(e){
+    console.log(e);
+}
 var ToolsContainer = require('./tools.config.js');
 
 var CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -7,8 +12,7 @@ var SftpWebpackPlugin = require('sftp-webpack-plugin')
 
 var webpack_config = {
     entry: {
-        mainJS: './front-src/style/entry/index.js',
-        mainTS: './front-src/style/entry/index.ts'
+        ajax: './front-src/entry/ajax.js'
     },
     output: {
         path: __dirname + '/dest/deploy/', // 输出文件的保存路径
@@ -44,11 +48,11 @@ var webpack_config = {
 
 process.argv.forEach((argv) => {
     if (argv === '-p') {
-        deploy();
+        // deploy();
     }
 })
 function deploy() {
-    if (private_config.SftpWebpackPlugin.open === true) {
+    if (private_config && private_config.SftpWebpackPlugin.open === true) {
         webpack_config.plugins.push(new SftpWebpackPlugin({
             port: private_config.SftpWebpackPlugin.port,
             host: private_config.SftpWebpackPlugin.host,
