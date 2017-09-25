@@ -3,8 +3,10 @@ try{
     private_config = './private_config/private.config.json'
     private_config = require(private_config);
 }catch(e){
-    console.log(e);
+    private_config = null;
+    // console.log(e);
 }
+
 var ToolsContainer = require('./tools.config.js');
 
 var CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -12,7 +14,8 @@ var SftpWebpackPlugin = require('sftp-webpack-plugin')
 
 var webpack_config = {
     entry: {
-        ajax: './front-src/entry/ajax.js'
+        // main: './front-src/entry/main.js'
+        main: './front-src-ts/entry/main.ts',
     },
     output: {
         path: __dirname + '/dest/deploy/', // 输出文件的保存路径
@@ -25,11 +28,17 @@ var webpack_config = {
         }, {
             test: /\.(ts)$/,
             loaders: 'ts-loader'
+        // }, {    
+        //     test: /\.(ts)$/,
+        //     loaders: 'awesome-typescript-loader'
+        }, {
+            test: /\.(css)$/,
+            loaders: 'style-loader!css-loader!postcss-loader'
         }, {
             test: /\.(scss|sass)$/,
             loaders: 'style-loader!css-loader!postcss-loader!sass-loader'
         }, {
-            test: /\.(png|jpg)$/,
+            test: /\.(png|jpg|jpeg|txt)$/,
             loaders: ToolsContainer.getDependencies('urlPathLoader')
                 // loaders: 'file-loader'
         }, {
@@ -45,12 +54,12 @@ var webpack_config = {
         })
     ]
 }
-
 process.argv.forEach((argv) => {
     if (argv === '-p') {
-        // deploy();
+        deploy();
     }
 })
+// deploy();
 function deploy() {
     if (private_config && private_config.SftpWebpackPlugin.open === true) {
         webpack_config.plugins.push(new SftpWebpackPlugin({
