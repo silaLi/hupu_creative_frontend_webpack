@@ -1,3 +1,5 @@
+var httpServiceOpen = true;
+
 var private_config = null;
 try{
     private_config = './private_config/private.config.json'
@@ -14,8 +16,8 @@ var SftpWebpackPlugin = require('sftp-webpack-plugin')
 
 var webpack_config = {
     entry: {
-        // main: './front-src/entry/main.js'
-        main: './front-src-ts/entry/main.ts',
+        // index: './front-src/entry/index.js'
+        index: './front-src/entry/index.ts',
     },
     output: {
         path: __dirname + '/dest/deploy/', // 输出文件的保存路径
@@ -74,3 +76,16 @@ function deploy() {
 }
 
 module.exports = webpack_config;
+
+if (httpServiceOpen) {
+    var express = require('express');
+    var bodyParser = require('body-parser')
+    var app = express();
+
+    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(express.static('dest'));
+    var server = app.listen(3000, function() {
+        console.log('Listening on port %d', server.address().port);
+    });
+}
+
