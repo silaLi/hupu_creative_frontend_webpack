@@ -48,6 +48,9 @@ var webpack_config = {
             loaders: 'html-loader'
         }]
     },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js' ]
+    },
     plugins: [
         new CleanWebpackPlugin([__dirname + '/dest/deploy/'], {
             root: '', // An absolute path for the root  of webpack.config.js
