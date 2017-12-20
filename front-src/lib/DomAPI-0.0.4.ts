@@ -1,4 +1,5 @@
 export class DomAPI {
+  static version = '0.0.2';
   private elemList: Array<Element>;
   elemSelector: string;
   elemParents: Array<Element>;
@@ -68,7 +69,15 @@ export class DomAPI {
    */
   eq(index: number): DomAPI{
     return DomAPI.CreateByElem(this.getElemList()[index]);
-    
+  }
+  /**
+   * 遍历当前控制元素
+   * 
+   * @param {(elem: Element, index: number) => void} handle 
+   * @memberof DomAPI
+   */
+  each(handle: (elem: Element, index: number) => void){
+    this.getElemList().forEach( (thisElem, thisIndex) => handle(thisElem, thisIndex) );
   }
   /**
    * 获取元素数组中的一部分，参数详情参考Array.slice
@@ -164,6 +173,29 @@ export class DomAPI {
     return DomAPI.CreateByElemList(parentList);
   }
   /**
+   * 获取所有满足条件的父元素
+   * 
+   * @param {string} parentElementSelector 
+   * @returns {DomAPI} 
+   * @memberof DomAPI
+   */
+  parents(parentElementSelector: string): DomAPI{
+    let parentList: Array<Element> = [];
+    if(parentElementSelector){
+      let parentCandidate = new DomAPI(parentElementSelector).getElemList();
+      let pElem = this.getEl(0).parentElement;
+      while(pElem.tagName.toUpperCase() == 'body'.toUpperCase()){
+        parentCandidate.forEach(parentElementElem => {
+          if(pElem == parentElementElem){
+            parentList.push(parentElementElem)
+          }
+        })
+        pElem = pElem.parentElement;
+      }
+    }
+    return DomAPI.CreateByElemList(parentList);
+  }
+  /**
    * 给当前元素添加处理事件
    * 事件名可以以空格分割添加多个事件，如："click change input", "click"
    * 
@@ -205,6 +237,24 @@ export class DomAPI {
         console.error('DomAPI.css error');
       }
     })
+  }
+  /**
+   * 设置元素的高度
+   * 
+   * @param {number} h 
+   * @memberof DomAPI
+   */
+  height(h: number): void{
+    this.css({ height: h + 'px'});
+  }
+  /**
+   * 设置元素的宽度
+   * 
+   * @param {number} w 
+   * @memberof DomAPI
+   */
+  width(w: number): void{
+    this.css({ width: w + 'px' });
   }
   /**
    * 获取元素的属性值
@@ -361,6 +411,31 @@ export class DomAPI {
   hide(): void{
     this.css({display: 'none'});
   }
+  /**
+   * 获取第一个元素距离顶部有多高
+   * default 0
+   * 
+   * @returns {number} 
+   * @memberof DomAPI
+   */
+  positionTop(): number{
+    let thiselem = this.getElemList()[0];
+    let top = 0
+    if (thiselem) {
+      try{
+        let a: any = thiselem;
+        let elem: HTMLElement = a;
+        while (elem.tagName != 'BODY' && elem.tagName != 'HTML') {
+            top += elem.offsetTop
+            elem = elem.parentElement;
+        }
+      }catch(e){
+        console.error('DomAPI positionTop error')
+      }
+    }
+    return top;
+  }
+  
   /**
    * 通过字符串创建DomAPI类
    * 
