@@ -1,7 +1,7 @@
 if(process.env.NODE_ENV == 'development'){
-    module.exports = require('./config/webpack.config.dev.js');
+    module.exports = require('./webpack.config.dev.js');
 }else if(process.env.NODE_ENV == 'depley'){
-    module.exports = require('./config/webpack.config.deploy.js');
+    module.exports = require('./webpack.config.deploy.js');
 }else if(process.env.NODE_ENV == 'release'){
-    module.exports = require('./config/webpack.config.release.js');
+    module.exports = require('./webpack.config.release.js');
 }

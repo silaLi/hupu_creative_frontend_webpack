@@ -1,5 +1,5 @@
 var path = require('path')
-var ToolsContainerDirName = './tools/tools.json'
+var ToolsContainerDirName = './tools.json'
 var ToolsContainer = require(ToolsContainerDirName);
 ToolsContainer.toolsPath = path.dirname(ToolsContainerDirName);
 ToolsContainer.getDependencies = function(dependenciesName){

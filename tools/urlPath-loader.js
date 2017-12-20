@@ -5,7 +5,7 @@
 var fs = require('fs');
 var path = require("path");
 var loaderUtils = require("loader-utils");
-var ToolsContainer = require('../tools.config.js');
+var ToolsContainer = require('./tools.config.js');
 
 module.exports = function(content) {
 	this.cacheable && this.cacheable();

@@ -11,9 +11,10 @@ npm-debug.log
 sftp-config.json
 *.sublime-project
 *.sublime-workspace
+*.code-workspace
+
+package-lock.json
 
 private_config/
 
 dest/deploy/*
-
-package-lock.json
