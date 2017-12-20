@@ -1,0 +1,24 @@
+.page{
+    position: relative;
+    overflow: hidden;
+    display: none;
+    img.bg{
+        width: 100%;
+        display: block;
+    }
+    .mask{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: block;
+        z-index: 0;
+    }
+    .page-container{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+    }
+}

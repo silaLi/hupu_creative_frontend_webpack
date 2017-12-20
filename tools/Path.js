@@ -1,3 +1,8 @@
+/**
+ * todo
+ * can use Url module
+ */
+
 var a = document.createElement('a');
 var a_pathname = document.createElement('a');
 var __dirname__list = null;
