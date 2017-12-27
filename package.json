@@ -9,7 +9,8 @@
     "dep": "cross-env NODE_ENV=depley webpack -p",
     "rel": "cross-env NODE_ENV=release webpack -p"
   },
-  "author": "",
+  "author": "liyang",
+  "email": "ly20479293@gmail.com",
   "license": "ISC",
   "devDependencies": {
     "@types/createjs": "0.0.29",

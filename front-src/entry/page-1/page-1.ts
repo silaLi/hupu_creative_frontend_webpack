@@ -21,7 +21,7 @@ export class Page1 extends Page {
     })
   }
   setBackground():void{
-    let background = DomAPI.CreateByHtmlString(`<img class="bg" v-src=''>`);
+    let background = DomAPI.CreateByHtmlString(`<img class="bg" src='${require("../../_asset/20130605100532641.jpg")}'>`);
     this.DOMAPI.appendBefore(background.getElemList());
   }
 }
