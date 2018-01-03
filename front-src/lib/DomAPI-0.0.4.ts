@@ -1,9 +1,9 @@
 export class DomAPI {
-  static version = '0.0.4';
+  static version = '0.0.6';
   private elemList: Array<Element>;
   elemSelector: string;
   elemParents: Array<Element>;
-  constructor(elemSelector?: string, elemParents?: Array<Element>) {
+  constructor(elemSelector: string = "", elemParents?: Array<Element>) {
     this.elemSelector = elemSelector;
     this.elemParents = elemParents || [];
   }
@@ -67,7 +67,7 @@ export class DomAPI {
    * @returns {DomAPI} 
    * @memberof DomAPI
    */
-  eq(index: number): DomAPI{
+  eq(index: number): DomAPI {
     return DomAPI.CreateByElem(this.getElemList()[index]);
   }
   /**
@@ -76,8 +76,8 @@ export class DomAPI {
    * @param {(elem: Element, index: number) => void} handle 
    * @memberof DomAPI
    */
-  each(handle: (elem: Element, index: number) => void){
-    this.getElemList().forEach( (thisElem, thisIndex) => handle(thisElem, thisIndex) );
+  each(handle: (elem: Element, index: number) => void) {
+    this.getElemList().forEach((thisElem, thisIndex) => handle(thisElem, thisIndex));
   }
   /**
    * 获取元素数组中的一部分，参数详情参考Array.slice
@@ -87,7 +87,7 @@ export class DomAPI {
    * @returns 
    * @memberof DomAPI
    */
-  slice(start?: number, end?: number){
+  slice(start?: number, end?: number) {
     return DomAPI.CreateByElemList(this.getElemList().slice(start, end));
   }
   /**
@@ -122,7 +122,7 @@ export class DomAPI {
    */
   appendBefore(insertElemList: Array<Element>) {
     this.getElemList().forEach((elem) => {
-      for(let i = insertElemList.length - 1; i >= 0; i--){
+      for (let i = insertElemList.length - 1; i >= 0; i--) {
         elem.insertBefore(insertElemList[i], elem.children[0])
       }
     })
@@ -133,9 +133,9 @@ export class DomAPI {
    * @param {Array<Element>} elemList 
    * @memberof DomAPI
    */
-  insertFront(elemList: Array<Element>): void{
-    elemList.forEach( newElem => {
-      this.getElemList().forEach( meElem => meElem.parentElement.insertBefore(newElem, meElem) );
+  insertFront(elemList: Array<Element>): void {
+    elemList.forEach(newElem => {
+      this.getElemList().forEach(meElem => meElem.parentElement && meElem.parentElement.insertBefore(newElem, meElem));
     });
   }
   /**
@@ -157,7 +157,7 @@ export class DomAPI {
    * @memberof DomAPI
    */
   replace(newElem: Element) {
-    this.getElemList().forEach(oldElem => oldElem.parentElement.replaceChild(newElem, oldElem));
+    this.getElemList().forEach(oldElem => oldElem.parentElement && oldElem.parentElement.replaceChild(newElem, oldElem));
   }
   /**
    * 获取元素的父元素
@@ -165,10 +165,11 @@ export class DomAPI {
    * @returns {DomAPI} 
    * @memberof DomAPI
    */
-  parent(): DomAPI{
+  parent(): DomAPI {
     let parentList: Array<Element> = [];
     this.getElemList().forEach(elem => {
-      parentList.push(elem.parentElement)
+      if(elem.parentElement)
+        parentList.push(elem.parentElement)
     });
     return DomAPI.CreateByElemList(parentList);
   }
@@ -179,17 +180,18 @@ export class DomAPI {
    * @returns {DomAPI} 
    * @memberof DomAPI
    */
-  parents(parentElementSelector: string): DomAPI{
+  parents(parentElementSelector: string): DomAPI {
     let parentList: Array<Element> = [];
-    if(parentElementSelector){
+    if (parentElementSelector) {
       let parentCandidate = new DomAPI(parentElementSelector).getElemList();
       let pElem = this.getEl(0).parentElement;
-      while(pElem.tagName.toUpperCase() == 'body'.toUpperCase()){
+      while ( pElem && pElem.tagName.toUpperCase() == 'body'.toUpperCase()) {
         parentCandidate.forEach(parentElementElem => {
-          if(pElem == parentElementElem){
+          if (pElem == parentElementElem) {
             parentList.push(parentElementElem)
           }
         })
+        if(pElem.parentElement)
         pElem = pElem.parentElement;
       }
     }
@@ -224,16 +226,16 @@ export class DomAPI {
    * @param {Object} cssStyle 
    * @memberof DomAPI
    */
-  css(cssStyle: any): void{
-    this.getElemList().forEach( elem => {
-      try{
-        for(let cssName in cssStyle){
-          if(cssStyle.hasOwnProperty(cssName)){
+  css(cssStyle: any): void {
+    this.getElemList().forEach(elem => {
+      try {
+        for (let cssName in cssStyle) {
+          if (cssStyle.hasOwnProperty(cssName)) {
             let anyElem: any = elem;
             anyElem.style[cssName] = cssStyle[cssName];
           }
         }
-      }catch(e){
+      } catch (e) {
         console.error('DomAPI.css error');
       }
     })
@@ -244,8 +246,8 @@ export class DomAPI {
    * @param {number} h 
    * @memberof DomAPI
    */
-  height(h: number): void{
-    this.css({ height: h + 'px'});
+  height(h: number): void {
+    this.css({ height: h + 'px' });
   }
   /**
    * 设置元素的宽度
@@ -253,7 +255,7 @@ export class DomAPI {
    * @param {number} w 
    * @memberof DomAPI
    */
-  width(w: number): void{
+  width(w: number): void {
     this.css({ width: w + 'px' });
   }
   /**
@@ -264,12 +266,12 @@ export class DomAPI {
    * @returns {string} 
    * @memberof DomAPI
    */
-  getAttr(name: string): string{
-    if(this.getElemList()[0]){
-      return CommonAttr.get(this.getElemList()[0], name);
-    }else{
+  getAttr(name: string): string {
+    if (this.getElemList()[0]) {
+      return CommonAttr.get(this.getElemList()[0], name) || "";
+    } else {
       return '';
-    }    
+    }
   }
   /**
    * 设置元素的属性值
@@ -279,8 +281,8 @@ export class DomAPI {
    * @param {string} value 
    * @memberof DomAPI
    */
-  setAttr(name: string, value: string): void{
-    this.getElemList().forEach( elem => CommonAttr.set(elem, name, value) );
+  setAttr(name: string, value: string): void {
+    this.getElemList().forEach(elem => CommonAttr.set(elem, name, value));
   }
   /**
    * 删除元素的属性值
@@ -289,16 +291,16 @@ export class DomAPI {
    * @param {any} name 
    * @memberof DomAPI
    */
-  removeAttr(name: string): void{
-    this.getElemList().forEach( elem => CommonAttr.remove(elem, name) );
+  removeAttr(name: string): void {
+    this.getElemList().forEach(elem => CommonAttr.remove(elem, name));
   }
   /**
    * 清除元素所有子元素
    * 
    * @memberof DomAPI
    */
-  empty(): void{
-    this.getElemList().forEach( elem => elem.innerHTML = '' );
+  empty(): void {
+    this.getElemList().forEach(elem => elem.innerHTML = '');
   }
   /**
    * 设置元素显示文本
@@ -307,10 +309,10 @@ export class DomAPI {
    * @param {string} text 
    * @memberof DomAPI
    */
-  text(text: string): void{
+  text(text: string): void {
     let textElem = document.createTextNode(text);
     this.empty();
-    this.getElemList().forEach( elem => {
+    this.getElemList().forEach(elem => {
       elem.appendChild(textElem.cloneNode());
     })
   }
@@ -320,8 +322,8 @@ export class DomAPI {
    * @param {string} html 
    * @memberof DomAPI
    */
-  html(html: string): void{
-    this.getElemList().forEach( elem => {
+  html(html: string): void {
+    this.getElemList().forEach(elem => {
       elem.innerHTML = html;
     })
   }
@@ -331,8 +333,8 @@ export class DomAPI {
    * @param {string} className 
    * @memberof DomAPI
    */
-  addClass(className: string): void{
-    this.getElemList().forEach( elem => ClassCustomize.addClass(elem, className) );
+  addClass(className: string): void {
+    this.getElemList().forEach(elem => ClassCustomize.addClass(elem, className));
   }
   /**
    * dom节点删除className
@@ -340,8 +342,8 @@ export class DomAPI {
    * @param {string} className 
    * @memberof DomAPI
    */
-  removeClass(className: string): void{
-    this.getElemList().forEach( elem => ClassCustomize.removeClass(elem, className) );
+  removeClass(className: string): void {
+    this.getElemList().forEach(elem => ClassCustomize.removeClass(elem, className));
   }
   /**
    * 判断元素是否包含className
@@ -351,10 +353,10 @@ export class DomAPI {
    * @returns {boolean} 
    * @memberof DomAPI
    */
-  containClass(className: string): boolean{
+  containClass(className: string): boolean {
     let elemList = this.getElemList();
-    for(let i = 0, len = elemList.length; i < len; i++){
-      if(ClassCustomize.containsClass(elemList[i], className) == false){
+    for (let i = 0, len = elemList.length; i < len; i++) {
+      if (ClassCustomize.containsClass(elemList[i], className) == false) {
         return false;
       }
     }
@@ -370,11 +372,11 @@ export class DomAPI {
    * @param {(elem) => void} noHandle 
    * @memberof DomAPI
    */
-  containClassFilter(className: string, yesHandle: (elem: Element) => void, noHandle: (elem: Element) => void): void{
-    this.getElemList().forEach( elem => {
-      if(ClassCustomize.containsClass(elem, className)){
+  containClassFilter(className: string, yesHandle: (elem: Element) => void, noHandle: (elem: Element) => void): void {
+    this.getElemList().forEach(elem => {
+      if (ClassCustomize.containsClass(elem, className)) {
         yesHandle(elem);
-      }else{
+      } else {
         noHandle(elem);
       }
     })
@@ -386,11 +388,11 @@ export class DomAPI {
    * @param {string} className 
    * @memberof DomAPI
    */
-  toggleClass(className: string): void{
-    this.getElemList().forEach( elem => {
-      if(ClassCustomize.containsClass(elem, className)){
+  toggleClass(className: string): void {
+    this.getElemList().forEach(elem => {
+      if (ClassCustomize.containsClass(elem, className)) {
         ClassCustomize.removeClass(elem, className);
-      }else{
+      } else {
         ClassCustomize.addClass(elem, className);
       }
     })
@@ -400,16 +402,16 @@ export class DomAPI {
    * 
    * @memberof DomAPI
    */
-  show(): void{
-    this.css({display: 'block'});
+  show(): void {
+    this.css({ display: 'block' });
   }
   /**
    * 隐藏元素
    * 
    * @memberof DomAPI
    */
-  hide(): void{
-    this.css({display: 'none'});
+  hide(): void {
+    this.css({ display: 'none' });
   }
   /**
    * 获取第一个元素距离顶部有多高
@@ -418,24 +420,27 @@ export class DomAPI {
    * @returns {number} 
    * @memberof DomAPI
    */
-  positionTop(): number{
+  positionTop(): number {
     let thiselem = this.getElemList()[0];
     let top = 0
     if (thiselem) {
-      try{
+      try {
         let a: any = thiselem;
         let elem: HTMLElement = a;
         while (elem.tagName != 'BODY' && elem.tagName != 'HTML') {
-            top += elem.offsetTop
+          top += elem.offsetTop
+          if (elem.parentElement)
             elem = elem.parentElement;
+          else
+            break;
         }
-      }catch(e){
+      } catch (e) {
         console.error('DomAPI positionTop error')
       }
     }
     return top;
   }
-  
+
   /**
    * 通过字符串创建DomAPI类
    * 
@@ -486,13 +491,13 @@ export class DomAPI {
   }
 }
 class CommonAttr {
-  static get(elem: Element, name: string): string{
+  static get(elem: Element, name: string): string | null {
     return elem.getAttribute(name);
   }
-  static set(elem: Element, name: string, value: string): void{
+  static set(elem: Element, name: string, value: string): void {
     elem.setAttribute(name, value);
   }
-  static remove(elem: Element, name: string): void{
+  static remove(elem: Element, name: string): void {
     elem.removeAttribute(name);
   }
 }
@@ -533,7 +538,7 @@ function CommonFastRender(str: string): Array<Element> {
   return childElements;
 }
 
-function _$(selector: string, elem?: Element): Element {
+function _$(selector: string, elem?: Element): Element | null {
   return elem ? elem.querySelector(selector) : document.querySelector(selector)
 }
 
@@ -545,11 +550,12 @@ function _$s(selector: string, elem?: Element): Array<Element> {
   }
   return elemList;
 }
-class ClassCustomize{
+class ClassCustomize {
   static addClass(elem: Element, className: string) {
     if (!elem) {
-        return 'there is no elem'; }
-  
+      return 'there is no elem';
+    }
+
     let classList = ClassCustomize.getClassList(elem);
     if (ClassCustomize.contains(classList, className) < 0) {
       classList.push(className)
@@ -572,7 +578,7 @@ class ClassCustomize{
     }
     return true;
   }
-  static setClassList(elem: Element, classList: Array<string>): void{
+  static setClassList(elem: Element, classList: Array<string>): void {
     elem.className = classList.join(' ');
   }
   static getClassList(elem: Element): Array<string> {
@@ -586,9 +592,9 @@ class ClassCustomize{
   }
   static contains(classList: Array<string>, className: string) {
     for (var i = 0, len = classList.length; i < len; i++) {
-        if (classList[i] == className) {
-            return i;
-        }
+      if (classList[i] == className) {
+        return i;
+      }
     }
     return -1;
   }
