@@ -224,7 +224,7 @@ export class DomAPI {
    * @param {Object} cssStyle 
    * @memberof DomAPI
    */
-  css(cssStyle: Object): void{
+  css(cssStyle: any): void{
     this.getElemList().forEach( elem => {
       try{
         for(let cssName in cssStyle){
@@ -264,7 +264,7 @@ export class DomAPI {
    * @returns {string} 
    * @memberof DomAPI
    */
-  getAttr(name): string{
+  getAttr(name: string): string{
     if(this.getElemList()[0]){
       return CommonAttr.get(this.getElemList()[0], name);
     }else{
@@ -289,7 +289,7 @@ export class DomAPI {
    * @param {any} name 
    * @memberof DomAPI
    */
-  removeAttr(name): void{
+  removeAttr(name: string): void{
     this.getElemList().forEach( elem => CommonAttr.remove(elem, name) );
   }
   /**
@@ -370,7 +370,7 @@ export class DomAPI {
    * @param {(elem) => void} noHandle 
    * @memberof DomAPI
    */
-  containClassFilter(className: string, yesHandle: (elem) => void, noHandle: (elem) => void): void{
+  containClassFilter(className: string, yesHandle: (elem: Element) => void, noHandle: (elem: Element) => void): void{
     this.getElemList().forEach( elem => {
       if(ClassCustomize.containsClass(elem, className)){
         yesHandle(elem);
@@ -502,7 +502,7 @@ class EventCustomize {
       EventCustomize.Bind(elem, eventType, next, useCapture);
     })
   }
-  static Bind(elem: Element, eventType: string, next: (ev: Event) => void, useCapture) {
+  static Bind(elem: Element, eventType: string, next: (ev: Event) => void, useCapture: boolean) {
     let eventTypes: Array<string> = eventType.split(' ');
     eventTypes.forEach((eventType) => {
       elem.addEventListener(eventType, next, useCapture);
@@ -513,7 +513,7 @@ class EventCustomize {
       EventCustomize.UnBind(elem, eventType, next, useCapture);
     })
   }
-  static UnBind(elem: Element, eventType: string, next: (ev: Event) => void, useCapture) {
+  static UnBind(elem: Element, eventType: string, next: (ev: Event) => void, useCapture: boolean) {
     let eventTypes: Array<string> = eventType.split(' ');
     eventTypes.forEach((eventType) => {
       elem.removeEventListener(eventType, next, useCapture);
@@ -546,7 +546,7 @@ function _$s(selector: string, elem?: Element): Array<Element> {
   return elemList;
 }
 class ClassCustomize{
-  static addClass(elem, className) {
+  static addClass(elem: Element, className: string) {
     if (!elem) {
         return 'there is no elem'; }
   
@@ -584,7 +584,7 @@ class ClassCustomize{
     }
     return classList;
   }
-  static contains(classList, className) {
+  static contains(classList: Array<string>, className: string) {
     for (var i = 0, len = classList.length; i < len; i++) {
         if (classList[i] == className) {
             return i;
