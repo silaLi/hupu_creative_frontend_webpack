@@ -490,6 +490,25 @@ export class DomAPI {
   static CreateByElem(elem: Element): DomAPI {
     return DomAPI.CreateByElemList([elem]);
   }
+  /**
+   * 快捷创建DomAPI
+   * 
+   * @static
+   * @param {(Element | Array<Element> | string)} e 
+   * @returns {DomAPI} 
+   * @memberof DomAPI
+   */
+  static render(e: Element | Array<Element> | string): DomAPI{
+    if(typeof e == 'string'){
+      return DomAPI.CreateByHtmlString(e);
+    }else if(e instanceof Element){
+      return DomAPI.CreateByElem(e);
+    }else if(e instanceof Array){
+      return DomAPI.CreateByElemList(e);
+    }else{
+      return new DomAPI();
+    }
+  }
 }
 class CommonAttr {
   static get(elem: Element, name: string): string | null {
