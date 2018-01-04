@@ -1,9 +1,9 @@
 import './page-1.scss'
 
-import { DomAPI } from "../../lib/DomAPI-0.0.4";
+import { DomAPI } from "../../lib/DomAPI";
 import { assetMap } from "../assetUtil";
 import { routes } from '../router';
-import { Page } from '../../lib/Page-0.1.1';
+import { Page } from '../../lib/Page';
 
 let HTML: string = require('./page-1.html');
 
@@ -21,7 +21,7 @@ export class Page1 extends Page {
     })
   }
   setBackground():void{
-    let background = DomAPI.CreateByHtmlString(`<img class="bg" src='${require("../../_asset/20130605100532641.jpg")}'>`);
+    let background = DomAPI.CreateByHtmlString(`<img class="bg" v-src=''>`);
     this.DOMAPI.appendBefore(background.getElemList());
   }
 }

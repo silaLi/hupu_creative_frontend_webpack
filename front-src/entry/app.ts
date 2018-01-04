@@ -1,7 +1,5 @@
 import '../style/style.scss';
 
-require('../_asset/20130605100532641.jpg')
-
 
 import { RemInit } from '../lib/Rem';
 import { routes } from './router';

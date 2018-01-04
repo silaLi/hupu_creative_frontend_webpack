@@ -1,5 +1,6 @@
-import './Page-0.1.1.scss';
-import { DomAPI } from './DomAPI-0.0.4';
+export let version = '0.0.1';
+import './Page.scss';
+import { DomAPI } from './DomAPI';
 
 export abstract class Page {
   DOMAPI: DomAPI;

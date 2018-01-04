@@ -1,4 +1,4 @@
-import { Page } from "../lib/Page-0.1.1";
+import { Page } from "../lib/Page";
 
 class pagesItem{
   id: string;

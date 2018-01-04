@@ -1,5 +1,6 @@
+export let version = '0.0.1';
 export class DomAPI {
-  static version = '0.0.4';
+  static version = version;
   private elemList: Array<Element>;
   elemSelector: string;
   elemParents: Array<Element>;
