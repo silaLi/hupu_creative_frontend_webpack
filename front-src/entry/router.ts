@@ -21,7 +21,7 @@ export class Routes {
       page: page
     })
   }
-  get(pageName: string): Page{
+  get(pageName: string): Page | undefined{
     for(let i = this.pages.length - 1; i >= 0; i--){
       if(this.pages[i].id == pageName){
         return this.pages[i].page
