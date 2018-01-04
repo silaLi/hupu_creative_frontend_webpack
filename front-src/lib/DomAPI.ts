@@ -1,4 +1,4 @@
-export let version = '0.0.1';
+export const version = '0.0.1';
 export class DomAPI {
   static version = version;
   private elemList: Array<Element>;

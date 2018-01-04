@@ -1,8 +1,9 @@
-export let version = '0.0.1';
+export const version = '0.0.1';
 import './Page.scss';
 import { DomAPI } from './DomAPI';
 
 export abstract class Page {
+  static version = version;
   DOMAPI: DomAPI;
   pDOMAPI: DomAPI = new DomAPI('body');
   _display = false;

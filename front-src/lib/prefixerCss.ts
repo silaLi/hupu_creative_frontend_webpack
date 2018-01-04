@@ -1,4 +1,4 @@
-export let version = '0.0.1';
+export const version = '0.0.1';
 import * as _ from 'lodash';
 
 let style_transition = '-webkit-transition: @{{value}};\

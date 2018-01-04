@@ -1,4 +1,4 @@
-export let version = '0.0.1';
+export const version = '0.0.1';
 let _window: any = window;
 let _document: any = document;
 _window.onresize = RemInit;
