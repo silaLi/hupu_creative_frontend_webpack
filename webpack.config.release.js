@@ -18,7 +18,11 @@ let packConfig = {
   module: {
     loaders: [{
       test: /\.(js)$/,
-      loaders: 'babel-loader?presets[]=es2015'
+      exclude: /node_modules/,
+      use: [
+        "babel-loader?presets[]=es2015",
+        "eslint-loader",
+      ]
     }, {
       test: /\.(ts)$/,
       loaders: 'ts-loader'
