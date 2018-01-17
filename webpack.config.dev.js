@@ -34,6 +34,13 @@ module.exports = {
     }, {
       test: /\.html$/,
       loaders: 'html-loader'
+    }, {
+      test: /\.art$/,
+      loader: "art-template-loader",
+      options: {
+        // art-template options (if necessary)
+        // @see https://github.com/aui/art-template
+      }
     }]
   },
   resolve: {
