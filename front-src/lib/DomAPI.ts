@@ -115,6 +115,17 @@ export class DomAPI {
     })
   }
   /**
+   * 把当前元素添加到parentElement中
+   * 
+   * @param {Element} parentElement 
+   * @memberof DomAPI
+   */
+  appendTo(parentElement: Element) {
+    this.elemList.forEach(theElem => {
+      parentElement.appendChild(theElem);
+    })
+  }
+  /**
    * 把元素添加当前可操作元素的第一个子元素的前面
    * 按数组顺序添加
    * 
@@ -169,7 +180,7 @@ export class DomAPI {
   parent(): DomAPI {
     let parentList: Array<Element> = [];
     this.getElemList().forEach(elem => {
-      if(elem.parentElement)
+      if (elem.parentElement)
         parentList.push(elem.parentElement)
     });
     return DomAPI.CreateByElemList(parentList);
@@ -186,14 +197,14 @@ export class DomAPI {
     if (parentElementSelector) {
       let parentCandidate = new DomAPI(parentElementSelector).getElemList();
       let pElem = this.getEl(0).parentElement;
-      while ( pElem && pElem.tagName.toUpperCase() == 'body'.toUpperCase()) {
+      while (pElem && pElem.tagName.toUpperCase() == 'body'.toUpperCase()) {
         parentCandidate.forEach(parentElementElem => {
           if (pElem == parentElementElem) {
             parentList.push(parentElementElem)
           }
         })
-        if(pElem.parentElement)
-        pElem = pElem.parentElement;
+        if (pElem.parentElement)
+          pElem = pElem.parentElement;
       }
     }
     return DomAPI.CreateByElemList(parentList);
@@ -498,14 +509,14 @@ export class DomAPI {
    * @returns {DomAPI} 
    * @memberof DomAPI
    */
-  static render(e: Element | Array<Element> | string): DomAPI{
-    if(typeof e == 'string'){
+  static render(e: Element | Array<Element> | string): DomAPI {
+    if (typeof e == 'string') {
       return DomAPI.CreateByHtmlString(e);
-    }else if(e instanceof Element){
+    } else if (e instanceof Element) {
       return DomAPI.CreateByElem(e);
-    }else if(e instanceof Array){
+    } else if (e instanceof Array) {
       return DomAPI.CreateByElemList(e);
-    }else{
+    } else {
       return new DomAPI();
     }
   }
