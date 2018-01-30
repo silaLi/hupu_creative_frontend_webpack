@@ -8,51 +8,14 @@ interface AssetResources{
 }
 class AssetMap{
   assetList: AssetResources[] = [{
-    name: 'search',
-    url: require('../_asset/weixin-search.png'),
-    loadCompleted: false
-  }, {
     name: 'chatsActive',
     url: require('../_asset/chats-active.png'),
     loadCompleted: false
-  }, {
-    name: 'contactsActive',
-    url: require('../_asset/contacts-active.png'),
-    loadCompleted: false
-  }, {
-    name: 'discoverActive',
-    url: require('../_asset/discover-active.png'),
-    loadCompleted: false
-  }, {
-    name: 'meActive',
-    url: require('../_asset/me-active.png'),
-    loadCompleted: false
-  }, {
-    name: 'poster',
-    url: require('../_asset/poster.jpg'),
-    loadCompleted: false
-  }, {
-    name: 'clickPromptIcon',
-    url: require('../_asset/poster-bottom.png'),
-    loadCompleted: false
-  }, {
-    name: 'wechatIcon',
-    url: require('../_asset/wechat.png'),
-    loadCompleted: false
-  }, {
-    name: 'input-area',
-    url: require('../_asset/input-area.jpg'),
-    loadCompleted: false
-  }, {
-    name: 'input-method-button-none',
-    url: require('../_asset/input-method.jpg'),
-    loadCompleted: false
-  }, {
-    name: 'input-method-button-have',
-    url: require('../_asset/input-method-have.jpg'),
-    loadCompleted: false
-  } ];
+  }];
   constructor(){
+    
+  }
+  preLoad(){
     _.forEach(this.assetList, (asset) =>{
       DomAPI.render(`<img src="${asset.url}">`).on('load', (ev) => {
         try{

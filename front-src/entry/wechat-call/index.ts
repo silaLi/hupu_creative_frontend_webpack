@@ -1,19 +1,19 @@
-import './page-1.scss'
+import './index.scss'
 
 import { DomAPI } from "../../lib/DomAPI";
 import { assetMap } from "../assetUtil";
 import { routes } from '../router';
 import { Page } from '../../lib/Page';
 
-let HTML: string = require('./page-1.html');
+let HTML: string = require('./index.html');
 
-export class Page1 extends Page {
+export class WeChatCall extends Page {
   constructor() {
     super();
   }
   initPageElem(): void{
     this.DOMAPI = DomAPI.CreateByHtmlString(HTML);
-    this.pDOMAPI.append(this.DOMAPI.getElemList());
+    
   }
   initPageEvent(): void{
     this.DOMAPI.find('.action-enter-next').on('click', () => {
@@ -23,5 +23,8 @@ export class Page1 extends Page {
   setBackground():void{
     let background = DomAPI.CreateByHtmlString(`<img class="bg" v-src=''>`);
     this.DOMAPI.appendBefore(background.getElemList());
+  }
+  pageElemAppend(){
+    this.pDOMAPI.appendTo('body');
   }
 }
