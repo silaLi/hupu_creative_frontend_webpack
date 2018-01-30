@@ -35,3 +35,11 @@ export function prefixerCss(cssName: string, value: string): string {
   let cssIndex = _.findIndex(styles, el => el.key == cssName);
   return styles[cssIndex].value.replace(/\s/g, '').replace(/@\{\{value\}\}/g, value);
 }
+export function prefixerCssObj(cssName: string, value: string): Object{
+  let styleObj: any = {};
+  prefixerCss(cssName, value).split(';').forEach( style => {
+    let a = style.split(':');
+    styleObj[a[0]] = a[1];
+  })
+  return styleObj;
+}
