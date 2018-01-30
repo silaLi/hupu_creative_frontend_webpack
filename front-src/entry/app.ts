@@ -3,19 +3,18 @@ import '../style/style.scss';
 
 import { RemInit } from '../lib/Rem';
 import { routes } from './router';
-
-import { Page1 } from "./page-1/page-1";
+import { WeChatCall } from './wechat-call/index';
 
 
 function initApp(){
   RemInit();
-  routes.set('page1', new Page1());
+  routes.set('WeChatCall', new WeChatCall());
 
   
 
-  routes.router('page1', () => {
+  routes.router('WeChatCall', () => {
     closePage();
-    let page = routes.get('page1')
+    let page = routes.get('WeChatCall')
     page && page.show();
   });
 }
@@ -27,4 +26,4 @@ function closePage(){
 
 initApp();
 
-routes.go('page1');
+routes.go('WeChatCall');
