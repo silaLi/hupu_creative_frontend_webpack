@@ -13,7 +13,7 @@ export class WeChatCall extends Page {
   }
   initPageElem(): void{
     this.DOMAPI = DomAPI.CreateByHtmlString(HTML);
-    this.pDOMAPI.append(this.DOMAPI.getElemList());
+    
   }
   initPageEvent(): void{
     this.DOMAPI.find('.action-enter-next').on('click', () => {
@@ -23,5 +23,8 @@ export class WeChatCall extends Page {
   setBackground():void{
     let background = DomAPI.CreateByHtmlString(`<img class="bg" v-src=''>`);
     this.DOMAPI.appendBefore(background.getElemList());
+  }
+  pageElemAppend(){
+    this.pDOMAPI.appendTo('body');
   }
 }
