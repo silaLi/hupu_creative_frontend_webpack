@@ -47,8 +47,8 @@ var Cache = {
     resolve: function(url){
         a_pathname.href = __origin + __dirname + url;
        
-        var search = a_pathname.search
-        var hash = a_pathname.hash
+        // var search = a_pathname.search
+        // var hash = a_pathname.hash
 
         return a_pathname.href;
     }
