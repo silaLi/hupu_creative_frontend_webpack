@@ -120,10 +120,14 @@ export class DomAPI {
    * @param {Element} parentElement 
    * @memberof DomAPI
    */
-  appendTo(parentElement: Element) {
-    this.elemList.forEach(theElem => {
-      parentElement.appendChild(theElem);
-    })
+  appendTo(parentSelector: Element | string) {
+    if(typeof parentSelector == 'string'){
+      new DomAPI(parentSelector).append(this.getElemList());
+    }else{
+      this.elemList.forEach(theElem => {
+        parentSelector.appendChild(theElem);
+      })
+    }
   }
   /**
    * 把元素添加当前可操作元素的第一个子元素的前面
