@@ -1,13 +1,13 @@
-import './page-1.scss'
+import './index.scss'
 
 import { DomAPI } from "../../lib/DomAPI";
 import { assetMap } from "../assetUtil";
 import { routes } from '../router';
 import { Page } from '../../lib/Page';
 
-let HTML: string = require('./page-1.html');
+let HTML: string = require('./index.html');
 
-export class Page1 extends Page {
+export class WeChatCall extends Page {
   constructor() {
     super();
   }
