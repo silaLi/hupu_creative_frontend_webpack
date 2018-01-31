@@ -344,6 +344,17 @@ export class DomAPI {
     })
   }
   /**
+   * 设置元素点样式
+   * 
+   * @param {string} className 
+   * @memberof DomAPI
+   */
+  setClass(className: string): void{
+    this.getElemList().forEach( elem => {
+      elem.className = className;
+    })
+  }
+  /**
    * dom节点添加className
    * 
    * @param {string} className 
