@@ -29,7 +29,7 @@ export class Routes {
     }
   }
   
-  router(sign: string, handle: () => void){
+  router(sign: string, handle: (argu: Array<any>) => void){
     this.routerPath.push({
       id: sign,
       handle: handle

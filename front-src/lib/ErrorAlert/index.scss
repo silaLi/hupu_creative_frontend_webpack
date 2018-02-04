@@ -1,0 +1,44 @@
+.g-error-msg{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: none;
+  background-color: red;
+  z-index: 50;
+  .msg-txt{
+    font-size: 12px;
+    line-height: 1.5;
+    min-height: 1.5em;
+    padding: 10px;
+    color: #fff;
+    
+  }
+  &.show{
+    display: block;
+  }
+  &.op-show{
+    display: block;
+    animation: op-show-animation .3s forwards;
+    @keyframes op-show-animation{
+      0%{
+        opacity: 0
+      }
+      100%{
+        opacity: 1;
+      }
+    }
+  }
+  &.op-hide{
+    display: block;
+    animation: op-hide-animation .3s forwards;
+    @keyframes op-hide-animation{
+      0%{
+        opacity: 1
+      }
+      100%{
+        opacity: 0;
+      }
+    }
+  }
+}

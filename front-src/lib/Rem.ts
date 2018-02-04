@@ -24,7 +24,7 @@ export function RemInit(): void {
  * @param {number} [designSize=640] 
  * @returns {number} 
  */
-export default function px(rem: number, designSize: number = 640): number {
+export function RemToPx(rem: number, designSize: number = 640): number {
 	// $rem / 640 * 3.2 * 1rem;
 	return Math.ceil(rem / designSize * 3.2 * _fontSize);
 }

@@ -78,6 +78,13 @@ export abstract class Page {
       this.DOMAPI.on('animationend webkitAnimationEnd oAnimationEnd', showAnimateEnd);
     }
   }
+  changeMode(mode: 'percent' | 'stream' | '' = ''){
+    const HtmlDomAPI = new DomAPI('html');
+    HtmlDomAPI.removeClass('percent stream');
+    if(mode != ''){
+      HtmlDomAPI.addClass(mode);
+    }
+  }
   showAnimateBefore(): void{}
   showAnimateAfter(): void{}
   hideAnimateBefore(): void{}

@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
 import { DomAPI } from '../lib/DomAPI';
 
-interface AssetResources{
+class AssetResources{
   name: string;
   url: string;
-  loadCompleted: boolean;
+  orUrl?: string;
+  loadCompleted: boolean = false;
 }
 class AssetMap{
   assetList: AssetResources[] = [{
@@ -17,6 +18,10 @@ class AssetMap{
   }
   preLoad(){
     _.forEach(this.assetList, (asset) =>{
+      // 已经加载完成了，或者不需要预加载
+      if(asset.loadCompleted == true){
+        return
+      }
       DomAPI.render(`<img src="${asset.url}">`).on('load', (ev) => {
         try{
           asset.loadCompleted = true;

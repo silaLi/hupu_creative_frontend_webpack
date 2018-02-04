@@ -257,6 +257,23 @@ export class DomAPI {
     })
   }
   /**
+   * 设置当前元素css样式，参数可以为数组
+   * 
+   * @param {any[]} cssStyleArr 
+   * @memberof DomAPI
+   */
+  cssArray(cssStyleArr: any[]){
+    let cssStyle: any = {};
+    cssStyleArr.forEach(cssStyleElem => {
+      for(let key in cssStyleElem){
+        if(cssStyleElem.hasOwnProperty(key)){
+          cssStyle[key] = cssStyleElem[key];
+        }
+      }
+    });
+    this.css(cssStyle);
+  }
+  /**
    * 设置元素的高度
    * 
    * @param {number} h 
