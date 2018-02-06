@@ -4,6 +4,16 @@ var SftpWebpackPlugin = require('sftp-webpack-plugin')
 var path = require('path')
 
 var private_config = './private_config/private.config.json'
+// private_config = {
+// 	"SftpWebpackPlugin": {
+// 		"open": false,
+// 		"port": "**",
+// 		"host": "***.***.***.***",
+// 		"username": "****",
+// 		"password": "********",
+// 		"to": ""
+// 	}
+// }
 private_config = require(private_config);
 
 let packConfig = {
