@@ -1,6 +1,6 @@
 import { DomAPI } from "./DomAPI";
 
-interface OptionItem{
+export interface OptionItem{
 	text: string;
 	value: string;
 }
