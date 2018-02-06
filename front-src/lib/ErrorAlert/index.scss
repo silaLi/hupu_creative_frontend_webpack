@@ -4,8 +4,13 @@
   left: 0;
   width: 100%;
   display: none;
-  background-color: red;
   z-index: 50;
+  &.red{
+    background-color: rgb(231, 15, 15);
+  }
+  &.green{
+    background: rgb(144, 192, 71)
+  }
   .msg-txt{
     font-size: 12px;
     line-height: 1.5;

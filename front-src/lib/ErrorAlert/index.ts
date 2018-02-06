@@ -8,14 +8,17 @@ class ErrorAlert {
   DOMAPIBaseClassName: string;
   MsgTxt: DomAPI;
   _autoCloseTimer: any;
+  _className: string;
   constructor() {
     this.DOMAPI = DomAPI.render(HTML);
     this.MsgTxt = this.DOMAPI.find('.msg-txt');
     this.DOMAPI.appendTo('body');
     this.DOMAPIBaseClassName = this.DOMAPI.getEl(0).className;
+    this._className = this.DOMAPI.getEl(0).className;
   }
   show(msg: string){
     this.MsgTxt.text(msg);
+    this.DOMAPI.setClass(this._className + ' red')
     new Animation(this.DOMAPI.getEl(0), 'op-show').run( () => {
       this.DOMAPI.setClass(this.DOMAPIBaseClassName + ' op-show');
       this.DOMAPI.setClass(this.DOMAPIBaseClassName + ' show');
@@ -30,6 +33,15 @@ class ErrorAlert {
         this.DOMAPI.setClass(this.DOMAPIBaseClassName);
       })
     }, 3000);
+  }
+  showSuccess(msg: string){
+    this.MsgTxt.text(msg);
+    this.DOMAPI.setClass(this._className + ' green')
+    new Animation(this.DOMAPI.getEl(0), 'op-show').run( () => {
+      this.DOMAPI.setClass(this.DOMAPIBaseClassName + ' op-show');
+      this.DOMAPI.setClass(this.DOMAPIBaseClassName + ' show');
+      this.autoClose();
+    })
   }
 }
 
