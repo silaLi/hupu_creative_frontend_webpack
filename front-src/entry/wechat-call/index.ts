@@ -25,6 +25,7 @@ export class WeChatCall extends Page {
     this.DOMAPI.appendBefore(background.getElemList());
   }
   pageElemAppend(){
-    this.pDOMAPI.appendTo('body');
+    this.pDOMAPI = new DomAPI('body');
+    this.pDOMAPI.append(this.DOMAPI.getElemList());
   }
 }
