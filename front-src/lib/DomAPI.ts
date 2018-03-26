@@ -1,4 +1,4 @@
-export const version = '0.0.1';
+export const version = '0.0.2';
 export class DomAPI {
   static version = version;
   private elemList: Array<Element>;
@@ -366,7 +366,9 @@ export class DomAPI {
    * @param {string} className 
    * @memberof DomAPI
    */
-  setClass(className: string): void{
+  setClass(className: string, ...classList: string[]): void{
+    classList = [className, ...classList];
+    className = classList.join(' ');
     this.getElemList().forEach( elem => {
       elem.className = className;
     })

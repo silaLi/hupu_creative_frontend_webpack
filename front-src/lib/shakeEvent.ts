@@ -1,4 +1,4 @@
-import { CreatId } from './CreateId';
+import { CreateId } from './CreateId';
 import * as _ from 'lodash';
 // DeviceOrientation将底层的方向传感器和运动传感器进行了高级封装，提供了DOM事件的支持。
 // 这个特性包括两个事件：
@@ -103,7 +103,7 @@ const shakeHandlerList: ShakeEventObject[] = [];
 let isListen = false;
 export function addShakeEvent(handler: () => void): ShakeEventObject{
   const obj = {
-    id: CreatId(),
+    id: CreateId(),
     handler: handler
   };
   shakeHandlerList.push(obj);
