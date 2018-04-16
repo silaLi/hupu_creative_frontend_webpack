@@ -1,17 +1,29 @@
-export const version = '0.0.2';
+export const version = '0.0.1';
 import './Page.scss';
 import { DomAPI } from './DomAPI';
+import { prefixerCssObj } from './prefixerCss';
+import { startPageTransformSize, stopPageTransformSize } from '../entry/windowResize';
+
+
+export const pageContainer = DomAPI.render(`
+<div class="page-set">
+  <div class="page-set-transform"></div>
+</div>
+`)
+pageContainer.appendTo('body');
+export const pageContainerTransform = pageContainer.find('.page-set-transform');
 
 export abstract class Page {
   static version = version;
   DOMAPI: DomAPI;
-  pDOMAPI: DomAPI;
+  pDOMAPI: DomAPI = pageContainerTransform;
   _display = false;
   _animating = false;
   constructor() {
     this.initPageElem();
     this.initPageEvent();
     this.setBackground();
+    this.modeChange('fixed');
     this.pageElemAppend();
   }
   show(): void {
@@ -78,12 +90,24 @@ export abstract class Page {
       this.DOMAPI.on('animationend webkitAnimationEnd oAnimationEnd', showAnimateEnd);
     }
   }
-  changeMode(mode: 'percent' | 'stream' | '' = ''){
-    const HtmlDomAPI = new DomAPI('html');
-    HtmlDomAPI.removeClass('percent stream');
-    if(mode != ''){
-      HtmlDomAPI.addClass(mode);
+  // steam: 流动布局
+  // fixed: 固定高度
+  // percent: 百分之百高度
+  modeChange(mode: 'steam' | 'fixed' | 'percent'){
+    switch(mode){
+      case 'steam':
+      startPageTransformSize();
+      break;
+      case 'fixed':
+      stopPageTransformSize();
+      break;
+      case 'percent':
+      stopPageTransformSize();
+      break;
     }
+    const html = new DomAPI('html')
+    html.removeClass('steam fixed percent')
+    html.addClass(mode);
   }
   showAnimateBefore(): void{}
   showAnimateAfter(): void{}

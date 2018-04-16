@@ -43,6 +43,3 @@ export function prefixerCssObj(cssName: string, value: string): Object{
   })
   return styleObj;
 }
-export function prefixerCssArr(cssName: string, value: string): Object[]{
-  return [prefixerCssObj(cssName, value)]
-}

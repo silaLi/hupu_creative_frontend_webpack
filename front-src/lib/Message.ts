@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { CreateId } from "./CreateId";
+import { CreatId } from "./CreateId";
 interface MsgSubscripted{
   id: string;
   name: string;
@@ -24,7 +24,7 @@ export class Message {
       msgSubscripted.handlers.push(handler);
     }else{
       msgSubscripted = {
-        id: CreateId(),
+        id: CreatId(),
         name: msgName,
         handlers: [handler]
       }

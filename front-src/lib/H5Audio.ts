@@ -2,16 +2,15 @@ export class GameAudio {
   audio: HTMLAudioElement;
   audioBackUp: HTMLAudioElement;
   isPreload = false;
-  isPlaying = false;
+  playNum = 0;
   constructor(src: string) {
     this.audioBackUp = new Audio();
     this.audioBackUp.controls = true;
 
     this.audio = new Audio();
     this.audio.controls = true;
-
+    
     this.setSrc(src);
-    this.preload();
     this.audio.onplay = () =>{
       this.isPreload = true;
     }
@@ -25,13 +24,7 @@ export class GameAudio {
     this.audioBackUp.play();
     setTimeout(() => {
       try {
-        // 暂存playing状态，pause会修改playing状态
-        const playing = this.isPlaying;
         this.pause();
-        // 使用之前的状态
-        if(playing){
-          this.play();
-        }
       }catch(e) {
         console.error('audio preload error');
       }
@@ -41,23 +34,17 @@ export class GameAudio {
     this.audio.src = src;
     this.audioBackUp.src = src;
   }
-  setLoop(loop: boolean){
-    this.audio.loop = loop;
-  }
   play(){
-    this.isPlaying = true;
-    if(!this.isPlaying){
-      this.audioBackUp.currentTime = 0;
+    this.playNum++;
+    if (this.playNum % 2 == 0){
       this.audio.currentTime = 0;
-    }
-    if (!this.audio.paused){
-      this.audioBackUp.play();
-    }else{
       this.audio.play();
+    }else{
+      this.audioBackUp.currentTime = 0;
+      this.audioBackUp.play();
     }
   }
   pause(){
-    this.isPlaying = false;
     this.audio.pause();
     this.audioBackUp.pause();
   }

@@ -1,4 +1,11 @@
+interface CssCacheObj{
+  elem: Element;
+  cssName: string;
+  cssVal: string;
+}
 export const version = '0.0.2';
+import * as _ from 'lodash';
+
 export class DomAPI {
   static version = version;
   private elemList: Array<Element>;
@@ -102,6 +109,15 @@ export class DomAPI {
     return new DomAPI(selector, this.getElemList());
   }
   /**
+   * 把元素添加到selector选择器选择的元素中
+   * 
+   * @param {string} selector 
+   * @memberof DomAPI
+   */
+  appendTo(selector: string): void{
+    new DomAPI(selector).append(this.getElemList());
+  }
+  /**
    * 把元素添加当前可操作元素的最后一个子元素的后面
    * 
    * @param {Array<Element>} insertElemList 
@@ -113,21 +129,6 @@ export class DomAPI {
         elem.appendChild(insertElem)
       })
     })
-  }
-  /**
-   * 把当前元素添加到parentElement中
-   * 
-   * @param {Element} parentElement 
-   * @memberof DomAPI
-   */
-  appendTo(parentSelector: Element | string) {
-    if(typeof parentSelector == 'string'){
-      new DomAPI(parentSelector).append(this.getElemList());
-    }else{
-      this.elemList.forEach(theElem => {
-        parentSelector.appendChild(theElem);
-      })
-    }
   }
   /**
    * 把元素添加当前可操作元素的第一个子元素的前面
@@ -184,7 +185,7 @@ export class DomAPI {
   parent(): DomAPI {
     let parentList: Array<Element> = [];
     this.getElemList().forEach(elem => {
-      if (elem.parentElement)
+      if(elem.parentElement)
         parentList.push(elem.parentElement)
     });
     return DomAPI.CreateByElemList(parentList);
@@ -201,14 +202,14 @@ export class DomAPI {
     if (parentElementSelector) {
       let parentCandidate = new DomAPI(parentElementSelector).getElemList();
       let pElem = this.getEl(0).parentElement;
-      while (pElem && pElem.tagName.toUpperCase() == 'body'.toUpperCase()) {
+      while ( pElem && pElem.tagName.toUpperCase() == 'body'.toUpperCase()) {
         parentCandidate.forEach(parentElementElem => {
           if (pElem == parentElementElem) {
             parentList.push(parentElementElem)
           }
         })
-        if (pElem.parentElement)
-          pElem = pElem.parentElement;
+        if(pElem.parentElement)
+        pElem = pElem.parentElement;
       }
     }
     return DomAPI.CreateByElemList(parentList);
@@ -257,21 +258,69 @@ export class DomAPI {
     })
   }
   /**
-   * 设置当前元素css样式，参数可以为数组
+   * 删除style的赋值
    * 
-   * @param {any[]} cssStyleArr 
+   * @param {string[]} cssNames 
    * @memberof DomAPI
    */
-  cssArray(cssStyleArr: any[]){
-    let cssStyle: any = {};
-    cssStyleArr.forEach(cssStyleElem => {
-      for(let key in cssStyleElem){
-        if(cssStyleElem.hasOwnProperty(key)){
-          cssStyle[key] = cssStyleElem[key];
+  cssRemove(cssNames: string[]){
+    _.forEach(this.getElemList(), elem => {
+      _.forEach(cssNames, cssName => {
+        try {
+          (<any>elem).style[cssName] = '';
+        }catch (e){
+          console.error('DomAPI.cssRemove error');
         }
+      })
+    })
+  }
+  /**
+   * cssCache是css的性能增强版
+   * 通过缓存属性，避免多次访问Dom树
+   * 
+   * @param {*} cssStyle 
+   * @memberof DomAPI
+   */
+  _cssStyleCache: CssCacheObj[] = [];
+  cssCache(cssStyle: any): void {
+    this.getElemList().forEach(elem => {
+      try {
+        for (let cssName in cssStyle) {
+          if (cssStyle.hasOwnProperty(cssName)) {
+            let anyElem: any = elem;
+            const cssStyleCache = _.find(this._cssStyleCache, cssStyleElem => cssStyleElem.elem == anyElem);
+            
+            if(cssStyleCache && cssStyleCache.cssName == cssName && cssStyleCache.cssVal == cssStyle[cssName]){
+              // 当css缓存存在，并样式名和样式属性都相等的时候，不访问dom tree;
+              // console.log('不需要访问dom tree')
+            }else if(cssStyleCache && cssStyleCache.cssName == cssName && cssStyleCache.cssVal != cssStyle[cssName]){
+              // 当css缓存存在，并样式名和样式属性都不相等的时候，更新缓存，更新dom tree;
+              // console.log('设置css样式, 更新css缓存')
+              anyElem.style[cssName] = cssStyle[cssName];
+              cssStyleCache.cssVal = cssStyle[cssName];
+            }else{
+              anyElem.style[cssName] = cssStyle[cssName];
+              this._cssStyleCache.push({elem: anyElem, cssName: cssName, cssVal: cssStyle[cssName]})
+            }
+          }
+        }
+      } catch (e) {
+        console.error('DomAPI.css error');
       }
-    });
-    this.css(cssStyle);
+    })
+  }
+  /**
+   * 清楚cssNames里面对属性的缓存
+   * 
+   * @param {string[]} cssNames 
+   * @memberof DomAPI
+   */
+  cssCacheRestart(cssNames: string[]){
+    _.forEach(this.getElemList(), elem => {
+      _.forEach(cssNames, cssName => {
+        _.remove(this._cssStyleCache, cssStyleElem => cssStyleElem.elem == elem && cssName == cssStyleElem.cssName);
+      })
+    })
   }
   /**
    * 设置元素的高度
@@ -358,19 +407,6 @@ export class DomAPI {
   html(html: string): void {
     this.getElemList().forEach(elem => {
       elem.innerHTML = html;
-    })
-  }
-  /**
-   * 设置元素点样式
-   * 
-   * @param {string} className 
-   * @memberof DomAPI
-   */
-  setClass(className: string, ...classList: string[]): void{
-    classList = [className, ...classList];
-    className = classList.join(' ');
-    this.getElemList().forEach( elem => {
-      elem.className = className;
     })
   }
   /**
@@ -543,14 +579,14 @@ export class DomAPI {
    * @returns {DomAPI} 
    * @memberof DomAPI
    */
-  static render(e: Element | Array<Element> | string): DomAPI {
-    if (typeof e == 'string') {
+  static render(e: Element | Array<Element> | string): DomAPI{
+    if(typeof e == 'string'){
       return DomAPI.CreateByHtmlString(e);
-    } else if (e instanceof Element) {
+    }else if(e instanceof Element){
       return DomAPI.CreateByElem(e);
-    } else if (e instanceof Array) {
+    }else if(e instanceof Array){
       return DomAPI.CreateByElemList(e);
-    } else {
+    }else{
       return new DomAPI();
     }
   }
@@ -628,13 +664,16 @@ class ClassCustomize {
     ClassCustomize.setClassList(elem, classList)
     return elem;
   }
-  static removeClass(elem: Element, className: string): void {
-    let classList = ClassCustomize.getClassList(elem);
-    let index = ClassCustomize.contains(classList, className);
-    if (index >= 0) {
-      classList.splice(index, 1);
-      ClassCustomize.setClassList(elem, classList);
-    }
+  static removeClass(elem: Element, classNames: string): void {
+    const classNameArr = classNames.split(' ');
+    _.forEach(classNameArr, className => {
+      let classList = ClassCustomize.getClassList(elem);
+      let index = ClassCustomize.contains(classList, className);
+      if (index >= 0) {
+        classList.splice(index, 1);
+        ClassCustomize.setClassList(elem, classList);
+      }
+    })
   }
   static containsClass(elem: Element, className: string): boolean {
     let classList = ClassCustomize.getClassList(elem);
