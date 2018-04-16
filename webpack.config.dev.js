@@ -1,75 +1,53 @@
-var ToolsContainer = require('./tools/tools.config.js');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
-var path = require('path')
+var base = require("./webpack.base.js");
 
 module.exports = {
   entry: {
-    // index: './front-src/entry/index.ts',
-    index: path.resolve(__dirname + '/./front-src/entry/index.test.ts'),
+    index: "./front-src/entry/index.test.js",
   },
-  output: {
-    path: path.resolve(__dirname + '/./dest/deploy/'), // 输出文件的保存路径
-    filename: '[name].entry.js' // 输出文件的名称
-  },
-  module: {
-    loaders: [{
-      test: /\.(js)$/,
-      exclude: /node_modules/,
-      use: [
-        "babel-loader?presets[]=es2015",
-        "eslint-loader",
-      ]
-    }, {
-      test: /\.(ts)$/,
-      loaders: 'ts-loader'
-      // }, {    
-      //     test: /\.(ts)$/,
-      //     loaders: 'awesome-typescript-loader'
-    }, {
-      test: /\.(css)$/,
-      loaders: 'style-loader!css-loader!postcss-loader'
-    }, {
-      test: /\.(scss|sass)$/,
-      loaders: 'style-loader!css-loader!postcss-loader!sass-loader'
-    }, {
-      test: /\.(png|jpg|jpeg|txt)$/,
-      loaders: ToolsContainer.getDependencies('urlPathLoader')
-      // loaders: 'file-loader'
-    }, {
-      test: /\.html$/,
-      loaders: 'html-loader'
-    }, {
-      test: /\.art$/,
-      loader: "art-template-loader",
-      options: {
-        // art-template options (if necessary)
-        // @see https://github.com/aui/art-template
-      }
-    }]
-  },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js']
-  },
+  ...base,
+  devtool: '#source-map',
   plugins: [
-    new CleanWebpackPlugin([path.resolve(__dirname + '/./dest/deploy/')], {
+    ...base.plugins,
+    new CleanWebpackPlugin([__dirname + "/dest/deploy/"], {
       root: '', // An absolute path for the root  of webpack.config.js
       verbose: true, // Write logs to console.
       dry: false // Do not delete anything, good for testing.
     })
   ],
-  externals: {
-
-  }
 }
 
 var express = require('express');
 var bodyParser = require('body-parser')
 var app = express();
 
+
+
 app.use(bodyParser.urlencoded({
   extended: false
 }))
 app.use(express.static('dest'));
-var server = app.listen(3000, function () {
-  console.log('Listening on port %d', server.address().port);
+var server = app.listen(8080, function () {
+  const host = getIPAdress();
+  const port = server.address().port
+  console.log("应用实例，访问地址为 http://%s:%s", host, port)
 });
+function getIPAdress() {
+  var hasLocalHost = false;
+  var interfaces = require('os').networkInterfaces();
+  for (var devName in interfaces) {
+    var iface = interfaces[devName];
+    for (var i = 0; i < iface.length; i++) {
+      var alias = iface[i];
+      if(alias.family === 'IPv4' && alias.address === '127.0.0.1'){
+        hasLocalHost = true
+      }
+      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
+  if(hasLocalHost === true){
+    return "127.0.0.1"
+  }
+} 

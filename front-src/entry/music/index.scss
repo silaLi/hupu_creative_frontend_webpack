@@ -1,0 +1,56 @@
+@function r($rem) {
+  @return $rem / 640 * 3.2 * 1rem;
+}
+.app-music{
+  position: absolute;
+  top: r(36);
+  right: r(36);
+  z-index: 12;
+  img{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: r(70);
+    height: r(70);
+  }
+  .sounds-1, .sounds-2{
+    opacity: 0;
+  }
+
+  &.playing{
+    .sounds-1{
+      animation: music-sounds-1 3s forwards infinite;
+      @keyframes music-sounds-1 {
+        0%{
+          opacity: 0;
+        }
+        33%{
+          opacity: 0;
+        }
+        34%{
+          opacity: 1;
+        }
+        100%{
+          opacity: 1;
+        }
+      }
+    }
+    .sounds-2{
+      animation: music-sounds-2 3s forwards infinite;
+      @keyframes music-sounds-2 {
+        0%{
+          opacity: 0;
+        }
+        66%{
+          opacity: 0;
+        }
+        67%{
+          opacity: 1;
+        }
+        100%{
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

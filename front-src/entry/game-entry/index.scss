@@ -1,0 +1,112 @@
+@function r($rem) {
+  @return $rem / 640 * 3.2 * 1rem;
+}
+
+.game-entry-page {
+  max-height: r(1256);
+
+  min-height: r(1006);
+  > .bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0, r(-3175));
+    img{
+      display: block;
+      width: 100%;
+    }
+  }
+  .page-container {
+    position: relative;
+    z-index: 1;
+  }
+  .logo{
+    position: absolute;
+    bottom: r(36);
+    display: block;
+    width: r(59);
+    left: 50%;
+    margin-left: r(-59 * .5);
+  }
+  .page-container {
+    position: relative;
+    z-index: 1;
+  }
+  .kv{
+    width: 100%;
+    display: block;
+  }
+  .next{
+    position: absolute;
+    left: r(382);
+    $scale: .6;
+    $top: 30;
+    $left: 40;
+    top: r(649 + $top);
+    width: r(190);
+    height: r(150);
+    img{
+      display: block;
+      width: r(239);
+      margin-top: r(-$top);
+      margin-left: r(-$left);
+    }
+  }
+  .name-input{
+    position: absolute;
+    top: r(674);
+    left: r(130);
+    font-size: r(50);
+    color: #fff;
+    outline: 0;
+    width: r(280);
+    background: transparent;
+    transform: rotate(-4deg);
+  }
+  .name-input::placeholder{
+    color: #fff;
+  }
+  &.prev-animation{
+    .page-container{
+      animation: page-game-prev-animation .3s .6s forwards;
+      transform: translate(100%);
+      @keyframes page-game-prev-animation {
+        0%{
+          transform: translate(100%);
+        }
+        90%{
+          transform: translate(-20%);
+        }
+        100%{
+          transform: translate(0);
+        }
+      }
+    }
+  }
+  &.next-animation{
+    .next{
+      animation: page-game-go-next-animation .3s 0s forwards;
+      @keyframes page-game-go-next-animation {
+        0%{
+          transform: scale(1);
+          opacity: 1;
+        }
+        100%{
+          transform: scale(1.2);
+          opacity: 0;
+        }
+      }
+    }
+    .kv-area{
+      animation: page-game-kv-animation .3s .3s forwards;
+      @keyframes page-game-kv-animation {
+        0%{
+          transform: translate3d(0, 0, 0);
+        }
+        100%{
+          transform: translate3d(100%, 0, 0);
+        }
+      }
+    }
+  }
+}

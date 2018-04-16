@@ -2,6 +2,7 @@
   position: relative;
   display: none;
   width: 100%;
+  overflow: hidden;
   img.bg {
     width: 100%;
     display: block;
@@ -26,7 +27,7 @@ html.percent {
   body {
     height: 100%;
     width: 100%;
-    .page-set {
+    #app {
       height: 100%;
       width: 100%;
     }
