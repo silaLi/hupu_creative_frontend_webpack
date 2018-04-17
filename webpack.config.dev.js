@@ -7,6 +7,17 @@ module.exports = {
   },
   ...base,
   devtool: '#source-map',
+  devServer: {
+    contentBase: "dist",
+    compress: true,
+    inline: true,
+    // open: "http://" + getIPAdress() + ":8080",
+    open: true,
+    port: 8080,
+    host: "0.0.0.0",
+    publicPath: "/deploy",
+    historyApiFallback: true,
+  },
   plugins: [
     ...base.plugins,
     new CleanWebpackPlugin([__dirname + "/dist/deploy/"], {
@@ -17,21 +28,7 @@ module.exports = {
   ],
 }
 
-var express = require('express');
-var bodyParser = require('body-parser')
-var app = express();
 
-
-
-app.use(bodyParser.urlencoded({
-  extended: false
-}))
-app.use(express.static('dist'));
-var server = app.listen(8080, function () {
-  const host = getIPAdress();
-  const port = server.address().port
-  console.log("应用实例，访问地址为 http://%s:%s", host, port)
-});
 function getIPAdress() {
   var hasLocalHost = false;
   var interfaces = require('os').networkInterfaces();

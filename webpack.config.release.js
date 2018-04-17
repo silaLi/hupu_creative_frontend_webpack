@@ -8,6 +8,7 @@ private_config = require(private_config);
 
 const config = {
   ...base,
+  mode: "production",
   entry: {
     index: "./front-src/entry/index.js",
   },

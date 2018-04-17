@@ -1,6 +1,7 @@
 var ToolsContainer = require("./tools/tools.config.js");
 var webpack = require("webpack");
 
+
 module.exports = {
   entry: {
     index: "./front-src/entry/index.test.js",
@@ -9,14 +10,15 @@ module.exports = {
     path: __dirname + "/dist/deploy/", // 输出文件的保存路径
     filename: "[name].entry.js" // 输出文件的名称
   },
+  mode: "development",
   module: {
-    loaders: [{
+    rules: [{
       test: /\.(js)$/,
-      exclude: /node_modules/,
-      use: [
-        "eslint-loader",
-        "babel-loader",
-      ]
+      use: "babel-loader",
+      // [
+      //   "eslint-loader",
+      //   "babel-loader",
+      // ]
     }, {
       test: /\.(ts)$/,
       loaders: "ts-loader"
