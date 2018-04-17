@@ -9,7 +9,7 @@ module.exports = {
   devtool: '#source-map',
   plugins: [
     ...base.plugins,
-    new CleanWebpackPlugin([__dirname + "/dest/deploy/"], {
+    new CleanWebpackPlugin([__dirname + "/dist/deploy/"], {
       root: '', // An absolute path for the root  of webpack.config.js
       verbose: true, // Write logs to console.
       dry: false // Do not delete anything, good for testing.
@@ -26,7 +26,7 @@ var app = express();
 app.use(bodyParser.urlencoded({
   extended: false
 }))
-app.use(express.static('dest'));
+app.use(express.static('dist'));
 var server = app.listen(8080, function () {
   const host = getIPAdress();
   const port = server.address().port

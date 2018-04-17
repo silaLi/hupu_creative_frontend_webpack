@@ -13,7 +13,7 @@ const config = {
   },
   plugins: [
     ...base.plugins,
-    new CleanWebpackPlugin([__dirname+"/dest/deploy/"], {
+    new CleanWebpackPlugin([__dirname+"/dist/deploy/"], {
       root: '', // An absolute path for the root  of webpack.config.js
       verbose: true, // Write logs to console.
       dry: false // Do not delete anything, good for testing.
@@ -27,7 +27,7 @@ if(private_config.SftpWebpackPlugin.open){
       host: private_config.SftpWebpackPlugin.host,
       username: private_config.SftpWebpackPlugin.username,
       password: private_config.SftpWebpackPlugin.password,
-      from: "./dest/deploy/",
+      from: "./dist/deploy/",
       to: private_config.SftpWebpackPlugin.to
     })
   )

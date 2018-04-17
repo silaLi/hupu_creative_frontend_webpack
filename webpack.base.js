@@ -6,7 +6,7 @@ module.exports = {
     index: "./front-src/entry/index.test.js",
   },
   output: {
-    path: __dirname + "/dest/deploy/", // 输出文件的保存路径
+    path: __dirname + "/dist/deploy/", // 输出文件的保存路径
     filename: "[name].entry.js" // 输出文件的名称
   },
   module: {
