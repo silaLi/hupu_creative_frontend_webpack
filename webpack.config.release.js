@@ -10,7 +10,12 @@ const config = {
   ...base,
   mode: "production",
   entry: {
-    index: "./front-src/entry/index.js",
+    index: "./front-src/index.js",
+  },
+  output: {
+    path: __dirname + "/dist/deploy/", // 输出文件的保存路径
+    filename: "[name].entry.js", // 输出文件的名称
+    publicPath: "/style/style_xbox/front/",
   },
   plugins: [
     ...base.plugins,

@@ -237,7 +237,7 @@ function getObjectURL(file) {
 }
 
 
-// assetMap.push("logo", require("../static/logo.png"));
+assetMap.push("logo", require("../static/1.png"));
 // assetMap.push("bgCommon", require("../static/bg_common.jpg"));
 // assetMap.push("intrKv", require("../static/intr-kv.png"));
 // assetMap.push("intrNext", require("../static/intr-next.png"));

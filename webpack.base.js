@@ -1,39 +1,73 @@
-var ToolsContainer = require("./tools/tools.config.js");
 var webpack = require("webpack");
 
 
 module.exports = {
   entry: {
-    index: "./front-src/entry/index.test.js",
-  },
-  output: {
-    path: __dirname + "/dist/deploy/", // 输出文件的保存路径
-    filename: "[name].entry.js" // 输出文件的名称
+    index: "./front-src/index.test.js",
   },
   mode: "development",
   module: {
     rules: [{
       test: /\.(js)$/,
-      use: "babel-loader",
-      // [
-      //   "eslint-loader",
-      //   "babel-loader",
-      // ]
+      exclude: /node_modules/,
+      use: [
+        "eslint-loader",
+        "babel-loader",
+      ]
     }, {
       test: /\.(ts)$/,
       loaders: "ts-loader"
     }, {
       test: /\.(css)$/,
-      loaders: "style-loader!css-loader!postcss-loader"
+      use: [{
+        loader: "style-loader",
+      }, {
+        loader: "css-loader",
+        options: {
+          modules: true,
+          "localIdentName": "[local]---[hash:base64:5]",
+        }
+      }, {
+        loader: "postcss-loader",
+      }]
     }, {
       test: /\.(scss|sass)$/,
-      loaders: "style-loader!css-loader!postcss-loader!sass-loader"
+      use: [{
+        loader: "style-loader",
+      }, {
+        loader: "css-loader",
+        options: {
+          modules: true,
+          "localIdentName": "[local]---[hash:base64:5]",
+        }
+      }, {
+        loader: "postcss-loader",
+      }, {
+        loader: "sass-loader",
+        options: {
+          
+        }
+      }]
     }, {
       test: /\.(png|jpg|jpeg|txt|mp3|wav)$/,
-      loaders: ToolsContainer.getDependencies("urlPathLoader")
+      use: [
+        {
+          loader: 'url-loader',
+          options: {
+            limit: 1024
+          }
+        }
+      ]
     }, {
       test: /\.html$/,
-      loaders: "html-loader"
+      use: [
+        {
+          loader: 'html-loader',
+          options: {
+            removeAttributeQuotes: false
+          }
+        }
+      ]
     }]
   },
   resolve: {
