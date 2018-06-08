@@ -1,4 +1,4 @@
-import "./Page.scss";
+import "./Page.css";
 import $ from "zepto";
 import { RemToPx } from "./rem";
 
