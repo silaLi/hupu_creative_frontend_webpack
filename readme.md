@@ -6,4 +6,4 @@
 
 ## 修补
 
-- 2018-06-11添加css-module支持，添加window.resize，添加rem的webpack插件
+- 2018-06-11添加css-module支持，添加window.resize，添加rem的webpack插件
