@@ -1,10 +1,14 @@
-import "./Page.css";
+import "./Page.scss";
 import $ from "zepto";
 import { RemToPx } from "./rem";
 
-const screenHeight = $(window).height();
-const maxScreenHeight = RemToPx(1256);
-const minScreenHeight = RemToPx(1006);
+let screenHeight, maxScreenHeight,minScreenHeight, _modeChangeTimeout = null;
+function windowArgu(){
+  screenHeight = $(window).height();
+  maxScreenHeight = RemToPx(1386);
+  minScreenHeight = RemToPx(1006);
+}
+windowArgu();
 /**
  * 1.添加hideFirstBefore, showFirstBefore, hideFirstAfter, showFirstAfter
  * 
@@ -17,6 +21,14 @@ export class Page {
     this.PDOM = null;
     this._display = false;
     this._animating = false;
+    this._mode = "";
+    $(window).on("resize", () => {
+      this.resize();
+    })
+  }
+  resize(){
+    windowArgu();
+    this.modeChange();
   }
   init(){
     this.initPageElem();
@@ -140,7 +152,8 @@ export class Page {
    * @param {string} [mode] 
    * @memberof Page
    */
-  modeChange(mode){
+  modeChange(mode = this._mode){
+    this._mode = mode;
     switch(mode){
       case 'steam':{
         Page.screenHeight = "auto";
@@ -175,13 +188,5 @@ export class Page {
   hideAnimateAfter(){}
 
   setImage(){}
-  
-  /**
-   * 弃用
-   * @memberof Page
-   */
-  openMinScreenHeight(){
-    
-  }
 }
 
