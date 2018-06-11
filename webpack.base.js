@@ -1,5 +1,5 @@
 var webpack = require("webpack");
-
+let path = require("path");
 
 module.exports = {
   entry: {
@@ -31,7 +31,7 @@ module.exports = {
         loader: "postcss-loader",
       }]
     }, {
-      test: /\.(scss|sass)$/,
+      test: /\.less$/,
       use: [{
         loader: "style-loader",
       }, {
@@ -43,10 +43,14 @@ module.exports = {
       }, {
         loader: "postcss-loader",
       }, {
-        loader: "sass-loader",
+        loader: path.resolve(__dirname, "./customize-loader/rpx-loader.js"),
         options: {
-          
-        }
+          psd: 640,
+          unit: "rpx",
+        },
+      }, {
+        loader: "less-loader",
+        options: {}
       }]
     }, {
       test: /\.(png|jpg|jpeg|txt|mp3|wav)$/,
@@ -64,6 +68,8 @@ module.exports = {
         {
           loader: 'html-loader',
           options: {
+            // 自定义css-mudole需要使用
+            // lib/css-module-aisle.js
             removeAttributeQuotes: false
           }
         }

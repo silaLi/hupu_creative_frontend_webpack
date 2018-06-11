@@ -1,8 +1,0 @@
-@function r($rem) {
-  @return $rem / 640 * 3.2 * 1rem;
-}
-body{
-  background: #000;
-  font-size: 12px;
-}
-
