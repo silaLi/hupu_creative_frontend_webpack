@@ -1,6 +1,7 @@
 let _window = window;
 let _document = document;
-_window.onresize = RemInit;
+let _maxPsd = null;
+_window.onresize = () => {RemInit()};
 let _init = false;
 let _fontSize = 0;
 /**
@@ -8,10 +9,12 @@ let _fontSize = 0;
  * 
  * @export
  */
-export function RemInit() {
+export function RemInit(maxPsd = _maxPsd) {
 	_init = true;
 	let c = _document.getElementsByTagName('html')[0];
 	let b = c.clientWidth;
+	b = b > maxPsd? b : maxPsd;
+	
 	_fontSize = b / 20 / 16 * 100
 	c.style.fontSize = _fontSize + 'px';
 }
