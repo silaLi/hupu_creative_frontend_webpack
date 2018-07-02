@@ -8,8 +8,10 @@ import * as _ from "lodash";
 export function thorough(html, style){
   return html.replace(/class=\"(.*?)\"/g, function (a, b, c) {
     let bArr = b.split(" ");
-    if (bArr.length > 0 && style[bArr[0]])
-      return `class="${_.map(bArr, classNameItem => style[classNameItem]).join(" ")}"`;
+    if (bArr.length > 0)
+      return `class="${_.map(bArr, classNameItem => {
+        return style[classNameItem] || classNameItem
+      }).join(" ")}"`;
     else
       return "";
   })
