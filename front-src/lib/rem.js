@@ -13,7 +13,7 @@ export function RemInit(maxPsd = _maxPsd) {
 	_init = true;
 	let c = _document.getElementsByTagName('html')[0];
 	let b = c.clientWidth;
-	b = b > maxPsd? b : maxPsd;
+	b = b > maxPsd? maxPsd : b;
 	
 	_fontSize = b / 20 / 16 * 100
 	c.style.fontSize = _fontSize + 'px';

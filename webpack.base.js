@@ -41,8 +41,9 @@ module.exports = {
       }, {
         loader: path.resolve(__dirname, "./customize-loader/rpx-loader.js"),
         options: {
-          psd: 640,
-          unit: "rpx",
+          psdQuery: 750,
+          unitQuery: "rpx",
+          numFixed: 5,
         },
       }, {
         loader: "less-loader",
