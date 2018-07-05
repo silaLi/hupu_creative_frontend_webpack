@@ -1,4 +1,4 @@
-import $ from "zepto";
+import $ from "jquery";
 import { APP } from "./app";
 import weui from 'weui.js';
 

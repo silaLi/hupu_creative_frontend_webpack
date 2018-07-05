@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import $ from "zepto";
+import $ from "jquery";
 
 // {
 //   name: 'bgCommon',

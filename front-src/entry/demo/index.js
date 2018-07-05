@@ -1,7 +1,6 @@
 import style from './index.scss'
-import $ from "zepto";
+import $ from "jquery";
 import * as _ from 'lodash';
-import FastClick from "fastclick";
 import { thorough } from "../../lib/css-module-aisle";
 import { Page } from '../../lib/Page.js';
 let HTML = require('./index.html');

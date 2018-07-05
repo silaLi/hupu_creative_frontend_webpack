@@ -11,7 +11,7 @@ module.exports = function(source) {
   let {psdQuery, unitQuery, numFixed} = options;
   source = source.replace(new RegExp(`(\\d+)(${unitQuery})`, "g"), function(value, num, unit){
     let r = num / psdQuery * 3.2;
-    return r.toFixed(5) + "rem";
+    return r.toFixed(numFixed) + "rem";
   })
   return source;
 };

@@ -1,4 +1,4 @@
-var CleanWebpackPlugin = require('clean-webpack-plugin');
+
 var SftpWebpackPlugin = require('sftp-webpack-plugin');
 var base = require("./webpack.base.js");
 
@@ -15,15 +15,15 @@ const config = {
   output: {
     path: __dirname + "/dist/deploy/", // 输出文件的保存路径
     filename: "[name].entry.js", // 输出文件的名称
-    publicPath: "/style/style_xbox/front/",
+    publicPath: "./deploy/",
   },
   plugins: [
     ...base.plugins,
-    new CleanWebpackPlugin([__dirname+"/dist/deploy/"], {
-      root: '', // An absolute path for the root  of webpack.config.js
+    new CleanWebpackPlugin([__dirname+"/dist/"], {
       verbose: true, // Write logs to console.
-      dry: false // Do not delete anything, good for testing.
-    })
+      dry: false, // Do not delete anything, good for testing.
+      allowExternal: true,
+    }),
   ],
 }
 if(private_config.SftpWebpackPlugin.open){

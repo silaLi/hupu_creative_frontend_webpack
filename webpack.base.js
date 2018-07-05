@@ -1,5 +1,6 @@
-var webpack = require("webpack");
 let path = require("path");
+let CleanWebpackPlugin = require('clean-webpack-plugin');
+let HtmlWebpackPlugin = require("Html-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -14,9 +15,6 @@ module.exports = {
         "eslint-loader",
         "babel-loader",
       ]
-    }, {
-      test: /\.(ts)$/,
-      loaders: "ts-loader"
     }, {
       test: /\.(css)$/,
       use: [{
@@ -75,11 +73,15 @@ module.exports = {
   },
   resolve: {
     extensions: [".js"],
-    alias: {
-      "zepto": __dirname+ "/front-src/assets/zepto-verdor"
-    }
   },
   plugins: [
     
+    new HtmlWebpackPlugin({
+      title: "来vipJr学习的理由",
+      chunks: ["index"],
+      hash: true,
+      filename: "../index.html",
+      template: './front-src/routes-entry-html/index.html'
+    })
   ],
 }
