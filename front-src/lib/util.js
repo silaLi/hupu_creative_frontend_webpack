@@ -29,3 +29,39 @@ export function ComputeCharLength(str){
   }
   return len;
 }
+
+export function getQueryString(name){
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); var r = window.location.search.substr(1).match(reg); if (r != null) return decodeURIComponent(r[2]); return null;
+}
+export function getQueryStrings(url){
+  // var url = location.search; //获取url中"?"符后的字串 
+	var theRequest = new Object(); 
+	if (url.indexOf("?") != -1) {
+		var str = url.substr(1); 
+		var strs = str.split("&"); 
+		for(var i = 0; i < strs.length; i ++) {
+			theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]); 
+		} 
+	} 
+	return theRequest; 
+}
+export function getCookie(name){
+  var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)"); if (arr = document.cookie.match(reg)) return decodeURIComponent(arr[2]); return null;
+}
+export function getEventId(code) {
+  return ('' + code).substring(0, 4) + Date.now();
+}
+
+export function isMobile() { 
+  return /Android|webOS|iPhone|iPad|iPod|ucweb|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(navigator.userAgent);
+}
+
+export function getIosVersion(callBack){
+  var str= navigator.userAgent.toLowerCase(); 
+  var ver=str.match(/cpu iphone os (.*?) like mac os/);
+  if(ver){
+    ver = ver[1].replace(/_/g,".")
+    callBack(ver, ver.split("."))
+    return ver;
+  }
+}

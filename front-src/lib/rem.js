@@ -10,6 +10,9 @@ let _fontSize = 0;
  * @export
  */
 export function RemInit(maxPsd = _maxPsd) {
+	if(maxPsd){
+		_maxPsd = maxPsd;
+	}
 	_init = true;
 	let c = _document.getElementsByTagName('html')[0];
 	let b = c.clientWidth;
