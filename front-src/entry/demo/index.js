@@ -1,4 +1,4 @@
-import style from './index.scss'
+import style from './index.less'
 import $ from "jquery";
 import * as _ from 'lodash';
 import { thorough } from "../../lib/css-module-aisle";

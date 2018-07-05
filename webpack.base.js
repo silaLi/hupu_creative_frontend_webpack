@@ -74,8 +74,10 @@ module.exports = {
   resolve: {
     extensions: [".js"],
   },
+  externals: {
+    jquery: 'jQuery',
+  },
   plugins: [
-    
     new HtmlWebpackPlugin({
       title: "来vipJr学习的理由",
       chunks: ["index"],

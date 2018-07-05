@@ -35,10 +35,10 @@ module.exports = {
   },
   plugins: [
     ...base.plugins,
-    new CleanWebpackPlugin([__dirname+"/dist/"], {
-      root: '', // An absolute path for the root  of webpack.config.js
-      verbose: true, // Write logs to console.
-      dry: false, // Do not delete anything, good for testing.
-    }),
+    // new CleanWebpackPlugin([__dirname+"/dist/"], {
+    //   root: '', // An absolute path for the root  of webpack.config.js
+    //   verbose: true, // Write logs to console.
+    //   dry: false, // Do not delete anything, good for testing.
+    // }),
   ],
 }
