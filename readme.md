@@ -9,3 +9,8 @@
 - 2018-06-11添加css-module支持，添加window.resize，添加rem的webpack插件
 - 变更为less编译
 
+
+##note
+
+ 最新更新请看<https://github.com/silaLi/hupu_creative_frontend_webpack>
+
