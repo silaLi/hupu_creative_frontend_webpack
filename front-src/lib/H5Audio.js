@@ -1,5 +1,3 @@
-import { APP } from "../entry/app";
-
 /**
  * 多个音频
  * 有的音频播放间隔很短，第二次播放的时候可能会在第一次播放的声音还没播放完成的时候播放，导致第一次播放的声音还没播放完成就截断了
@@ -22,7 +20,8 @@ export class GameAudio {
 
     this.audio = new Audio();
     this.audio.controls = true;
-    
+    this.SilentMode = false;
+
     this.setSrc(src);
     // 播放一次后，说明已经缓存好了
     this.audio.onplay = () =>{
@@ -59,7 +58,7 @@ export class GameAudio {
     this.audioBackUp.src = src;
   }
   play(){
-    if(APP.SilentMode){
+    if(this.SilentMode){
       // 静音模式
       return;
     }
@@ -73,7 +72,7 @@ export class GameAudio {
     }
   }
   replay(){
-    if(APP.SilentMode){
+    if(this.SilentMode){
       // 静音模式
       return;
     }
@@ -118,6 +117,7 @@ export class SingleAudio{
     this.playNum = 0;
     this.audio = new Audio();
     this.audio.controls = true;
+    this.SilentMode = false;
 
     this.setSrc(src);
     // 播放一次后，说明已经缓存好了
@@ -147,7 +147,7 @@ export class SingleAudio{
     this.audio.src = src;
   }
   play(){
-    if(APP.SilentMode){
+    if(this.SilentMode){
       // 静音模式
       return;
     }
@@ -155,7 +155,7 @@ export class SingleAudio{
     this.audio.play();
   }
   replay(){
-    if(APP.SilentMode){
+    if(this.SilentMode){
       // 静音模式
       return;
     }
