@@ -3,9 +3,6 @@ let CleanWebpackPlugin = require('clean-webpack-plugin');
 let HtmlWebpackPlugin = require("Html-webpack-plugin");
 
 module.exports = {
-  entry: {
-    index: "./front-src/index.test.js",
-  },
   mode: "development",
   module: {
     rules: [{
@@ -78,12 +75,17 @@ module.exports = {
     jquery: 'jQuery',
   },
   plugins: [
+    new CleanWebpackPlugin([__dirname+"/dist/"], {
+      root: '', // An absolute path for the root  of webpack.config.js
+      verbose: true, // Write logs to console.
+      dry: false, // Do not delete anything, good for testing.
+    }),
     new HtmlWebpackPlugin({
       title: "来vipJr学习的理由",
       chunks: ["index"],
       hash: true,
       filename: "../index.html",
       template: './front-src/routes-entry-html/index.html'
-    })
+    }),
   ],
 }

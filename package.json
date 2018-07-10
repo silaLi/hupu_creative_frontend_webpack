@@ -1,14 +1,14 @@
 {
-  "name": "webpacktest",
+  "name": "devtool",
   "version": "1.0.0",
+  "node": "8.11.3",
   "description": "",
   "main": "index.js",
   "scripts": {
     "devs": "cross-env NODE_ENV=development webpack-dev-server",
     "dev": "cross-env NODE_ENV=development webpack --watch",
-    "rel": "cross-env NODE_ENV=release webpack -p",
+    "rel": "cross-env NODE_ENV=release webpack -p && npm run git-rel",
     "git-rel": "bash scripts/release.sh",
-    "git-dev": "bash scripts/release.sh",
     "sev": "./node_modules/.bin/http-server dist"
   },
   "author": "liyang",
@@ -32,7 +32,6 @@
     "less-loader": "^4.1.0",
     "postcss-loader": "^2.1.4",
     "precss": "^3.1.2",
-    "sftp-webpack-plugin": "^0.2.3",
     "style-loader": "^0.20.3",
     "url-loader": "^1.0.1",
     "webpack": "^4.5.0",
@@ -40,7 +39,6 @@
     "webpack-dev-server": "^3.1.3"
   },
   "dependencies": {
-    "jquery": "^3.3.1",
     "lodash": "^4.17.4",
     "pixi.js": "^4.5.5",
     "weui": "^1.1.2",

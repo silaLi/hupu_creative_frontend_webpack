@@ -5,12 +5,11 @@ let ips = utils.getIps();
 
 module.exports = {
   entry: {
-    index: "./front-src/index.test.js",
+    index: "./front-src/entries/index/index.test.js",
   },
   ...base,
   output: {
-    // path: __dirname + "/dist/deploy/", // 输出文件的保存路径
-    path: "/Users/liyang/Downloads/test/",
+    path: __dirname + "/dist/deploy/", // 输出文件的保存路径
     filename: "[name].entry.js", // 输出文件的名称
     publicPath: "./deploy/",
   },
@@ -20,10 +19,12 @@ module.exports = {
     compress: true,
     inline: true,
     open: true,
-    port: 8080,
+    port: 8070,
     allowedHosts: [
       "local.vipabc.com",
       "local.vipjr.com",
+      "dev.vipjr.com",
+      "stagelp.vipjr.com",
     ],
     host: ips[0] || "0.0.0.0",
     publicPath: "/deploy",
@@ -35,10 +36,5 @@ module.exports = {
   },
   plugins: [
     ...base.plugins,
-    // new CleanWebpackPlugin([__dirname+"/dist/"], {
-    //   root: '', // An absolute path for the root  of webpack.config.js
-    //   verbose: true, // Write logs to console.
-    //   dry: false, // Do not delete anything, good for testing.
-    // }),
   ],
 }

@@ -1,3 +1,2 @@
-import './entry/app';
+import './app';
 import $ from "jquery";
-
