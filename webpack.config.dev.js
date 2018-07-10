@@ -26,7 +26,7 @@ module.exports = {
       "dev.vipjr.com",
       "stagelp.vipjr.com",
     ],
-    host: ips[0] || "0.0.0.0",
+    host: "0.0.0.0",
     publicPath: "/deploy",
     // historyApiFallback: true,
     // proxy: {
