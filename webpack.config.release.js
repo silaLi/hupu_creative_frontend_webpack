@@ -2,9 +2,6 @@
 var base = require("./webpack.base.js");
 
 
-var private_config = './private_config/private.config.json'
-private_config = require(private_config);
-
 const config = {
   ...base,
   mode: "production",

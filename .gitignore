@@ -17,4 +17,4 @@ package-lock.json
 
 private_config/
 
-dist/deploy/*
+dist/*
