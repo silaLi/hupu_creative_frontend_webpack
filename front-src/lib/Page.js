@@ -1,14 +1,5 @@
-import "./Page.scss";
-import $ from "zepto";
-import { RemToPx } from "./rem";
+import $ from "jquery";
 
-let screenHeight, maxScreenHeight,minScreenHeight, _modeChangeTimeout = null;
-function windowArgu(){
-  screenHeight = $(window).height();
-  maxScreenHeight = RemToPx(1386);
-  minScreenHeight = RemToPx(1006);
-}
-windowArgu();
 /**
  * 1.添加hideFirstBefore, showFirstBefore, hideFirstAfter, showFirstAfter
  * 
@@ -27,15 +18,26 @@ export class Page {
     })
   }
   resize(){
-    windowArgu();
-    this.modeChange();
+    if(this.DOM && this._mode === "steam"){
+      this.DOM.css({
+        "min-height": getWindowHeight(),
+      })
+    } else if(this.DOM && this._mode === "percent"){
+      this.DOM.css({
+        "height": getWindowHeight(),
+      })
+    }
   }
-  init(){
+  init(options){
+    this._options = {
+      PDOM: null,
+      ...options,
+    }
     this.initPageElem();
     this.initPageEvent();
     this.setBackground();
     this.pageElemAppend();
-
+    
     return this;
   }
   show() {
@@ -97,11 +99,12 @@ export class Page {
         // 停止显示
         return 
       }
+      
       this.showFirstBefore();
       this.showFirstBefore = () => {};
       this.showbefore()
-      this.showAnimateBefore();
       this.DOM.show();
+      this.showAnimateBefore();
       this.DOM.addClass(animateClassName);
       this._animating = true;
       let showAnimateEnd = () => {
@@ -128,8 +131,8 @@ export class Page {
       this.hideFirstBefore();
       this.hideFirstBefore = () => {};
       this.hidebefore();
-      this.hideAnimateBefore();
       this.DOM.addClass(animateClassName);
+      this.hideAnimateBefore();
       this._animating = true;
       let showAnimateEnd = () => {
         this.DOM.off("animationend webkitAnimationEnd oAnimationEnd", showAnimateEnd);
@@ -146,42 +149,6 @@ export class Page {
       this.DOM.on("animationend webkitAnimationEnd oAnimationEnd", showAnimateEnd);
     }
   }
-  /**
-   * mode = 'steam' | 'fixed' | 'percent'
-   * 
-   * @param {string} [mode] 
-   * @memberof Page
-   */
-  modeChange(mode = this._mode){
-    this._mode = mode;
-    switch(mode){
-      case 'steam':{
-        Page.screenHeight = "auto";
-        this.__visitHeight = Infinity;
-        this.DOM.css({height: Page.screenHeight});
-        break;
-      }
-      case 'fixed':{
-        // h5的最大显示区域和最小显示区域
-        if(screenHeight > maxScreenHeight){
-          Page.screenHeight = maxScreenHeight
-        }else if(screenHeight < minScreenHeight){
-          Page.screenHeight = minScreenHeight
-        }else{
-          Page.screenHeight = screenHeight;
-        }
-        this.__visitHeight = Page.screenHeight;
-        this.DOM.css({height: Page.screenHeight});
-        break;
-      }
-      case 'percent':{
-        Page.screenHeight = screenHeight;
-        this.__visitHeight = Page.screenHeight;
-        this.DOM.css({height: Page.screenHeight});
-        break;
-      }
-    }
-  }
   showAnimateBefore(){}
   showAnimateAfter(){}
   hideAnimateBefore(){}
@@ -190,3 +157,9 @@ export class Page {
   setImage(){}
 }
 
+function getWindowHeight(){
+  var $elem = $("<div style='position: fixed;top: 0;left:0;bottom:0;right:0;opacity:0'></div>").appendTo("body");
+  var height = $elem.height();
+  $elem.remove();
+  return height;
+}

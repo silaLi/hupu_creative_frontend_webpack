@@ -1,23 +1,37 @@
-
-import "../../lib/reset-1.0.0.css"
+import "../../lib/reset-1.0.0.css";
 import 'weui';
+import "swiper/dist/css/swiper.css";
 import '../../pages/style.css';
+import { routes } from "../../lib/page-router";
+import { APP } from "../../pages/appStore";
 import $ from "jquery";
-import { RemInit } from "../../lib/rem"
-import * as Utils from "../../lib/util";
 
-// const index = new Index;
-function initApp(){
-  RemInit(550);
-  Utils.getIosVersion((ver, verArr) => {
-    if(verArr[0] == "10"){
-      $("html").addClass("ios-10");
-    }
+const empty = ()=>{};
+initAPPData();
+runPage();
+function runPage(){
+  initApp();
+  routesGo();
+}
+function routesGo(){
+  routes.go("page1")
+}
+function initAPPData(){
+ 
+}
+function initApp() {
+  APP.rem.maxWidth = 1000;
+  APP.rem.designSize = 750;
+  APP.rem.init();
+
+  routes.set("demo", new Demo().init())
+  
+  routes.router("demo", function(){
+    routes.get("demo").show();
   })
-  // index.init();
 }
 
-initApp();
+
 
 
 

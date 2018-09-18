@@ -1,1 +1,5 @@
-
+body{
+  font-size: 12px;
+  -webkit-tap-highlight-color: transparent;
+  background-color: #000;
+}

@@ -1,11 +1,13 @@
 import * as _ from 'lodash';
 import $ from "jquery";
+const empty = () => {};
 
 // {
 //   name: 'bgCommon',
 //   url: require('../static/bg_common.jpg'),
 //   loadCompleted: false
 // }
+// assetMap.push("logo", require("../static/1.png"));
 export class AssetMap{
   constructor(){
     this.assetList = [];
@@ -35,30 +37,58 @@ export class AssetMap{
     }
     this._preLoad_sign = true;
     const totalCount = _.reduce(this.assetList, (reduceVal, elem) => {if(elem.loadCompleted == false){ return reduceVal + 1 }else{ return reduceVal}}, 0)
-    _.forEach(this.assetList, (asset, index) =>{
+    this.assetList = _.map(this.assetList, (asset, index) =>{
       // 已经加载完成了，或者不需要预加载
       if(asset.loadCompleted == true){
         return
       }
-      $(`<img src="${asset.url}">`).on('load', (ev) => {
+      var img;
+      if(asset.img){
+        img = asset.img
+      }else{
+        img = document.createElement('img');
+        img.src = asset.url;
+      }
+      var loaded = (ev) => {
         try{
-          this.assetList = _.filter(this.assetList, (filterAsset) => asset.name != filterAsset.name);
-          this.assetList = [...this.assetList, {
+          var completeAsset = {
             ...asset,
             loadCompleted: true,            
             completeImage: ev.currentTarget || ev.target,
-          }]
+          }
+          this.assetList = _.map(this.assetList, (filterAsset) => {
+            if(asset.name == filterAsset.name){
+              return completeAsset;
+            }else{
+              return filterAsset;
+            }
+          })
 
           const completeCount =  _.reduce(this.assetList, (reduceVal, elem) => {if(elem.loadCompleted){ return reduceVal + 1 }else{ return reduceVal}}, 0)
-          this._process(completeCount / totalCount, completeCount, totalCount)
+          this._process(completeCount / totalCount, completeCount, totalCount, completeAsset)
           
           this.completeCheck();
         }catch(e){
           console.error('AssetMap assignment error', e);
         }
-      })
+      }
+      if(img.complete){
+        loaded()
+      }else{
+        img.onload = loaded;
+      }
+      return {...asset, loadImage: img};
     })
     this.completeCheck();
+  }
+  destory(){
+    _.forEach(this.assetList, item => {
+      if(item.loadImage){
+        item.loadImage.onload = empty
+      }
+    })
+    this._process = empty;
+    this._complete = empty;
   }
   setProcess(_process){
     this._process = _process;
@@ -120,10 +150,11 @@ export class AssetMap{
    * 添加至尾部
    * @memberof AssetMap
    */
-  push(name, url){
+  push(name, url, img){
     this.assetList = [...this.assetList, {
-      name: name,
-      url: url,
+      name,
+      url,
+      img,
       loadCompleted: false,
     }]
   }
@@ -237,45 +268,4 @@ function getObjectURL(file) {
 }
 
 
-assetMap.push("logo", require("../static/1.png"));
-// assetMap.push("bgCommon", require("../static/bg_common.jpg"));
-// assetMap.push("intrKv", require("../static/intr-kv.png"));
-// assetMap.push("intrNext", require("../static/intr-next.png"));
-// assetMap.push("GameEntryKv", require("../static/game-entry-kv.png"));
-// assetMap.push("GameEntryNext", require("../static/game-entry-next.png"));
-// assetMap.push("gameStopKv", require("../static/game-stop-kv.png"));
-// assetMap.push("inviteFriendsKv", require("../static/invite-friends-kv.png"));
-// assetMap.push("recordPhoneKv", require("../static/record-phone-kv.png"));
 
-// // assetMap.push("bgGame", require("../static/bg_game.jpg"));
-// for (let i = 1; i <= 10; i++) {
-//   let index = i;
-//   if(i < 10) index = "0" + i;
-//   assetMap.push("bg_game-part_"+ i, require(`../static/game/background/bg_game_${index}.jpg`));
-// }
-
-// // game 
-// assetMap.push("player-god", require("../static/game/player-god.png"));
-// assetMap.push("player-fai", require("../static/game/player-fai.png"));
-// assetMap.push("player-nor", require("../static/game/player-nor.png"));
-
-
-// // 加载字体图片
-// for (let index = 0; index < 10; index++) {
-//   assetMap.push("font-image-"+ index, require(`../static/font-image/${index}.png`));
-// }
-// assetMap.push("font-image-%", require("../static/font-image/precent.png"))
-// // 加载背景图片
-// assetMap.push("loadSoccer", require('../static/loading-soccer.png'));
-
-// for (let index = 1; index <= 9; index++) {
-//   assetMap.push("game-monster-"+ index, require(`../static/game/soccer-star-${index}.png`));
-// }
-// assetMap.push("game-soccer", require('../static/game/soccer.png'));
-// assetMap.push("game-special", require('../static/game/special.png'));
-// // assetMap.push("game-star-1", require('../static/game/star-1.png'));
-// // assetMap.push("game-star-2", require('../static/game/star-2.png'));
-
-// assetMap.push("sounds-0", require("../static/sounds-0.png"))
-// assetMap.push("sounds-1", require("../static/sounds-1.png"))
-// assetMap.push("sounds-2", require("../static/sounds-2.png"))

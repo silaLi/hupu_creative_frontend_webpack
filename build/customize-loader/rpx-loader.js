@@ -6,8 +6,9 @@ let defaultOptions = {
   unitQuery: "rpx",
   numFixed: 5,
 }
+let options = {...defaultOptions, ...this.query};
 module.exports = function(source) {
-  let options = {...defaultOptions, ...this.query};
+  this.cacheable(true);
   let {psdQuery, unitQuery, numFixed} = options;
   source = source.replace(new RegExp(`(\\d+)(${unitQuery})`, "g"), function(value, num, unit){
     let r = num / psdQuery * 3.2;

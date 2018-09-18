@@ -5,46 +5,56 @@
  * @export
  * @class GameAudio
  */
+import * as _ from "lodash";
 export class GameAudio {
 /**
  * audio.src
  * @param {string} src 
  */
-  constructor(src) {
+  constructor(src, num) {
     // 单位秒
-    this.preloadTime = 1;
+    this.preloadTime = .05;
     this.isPreload = false;
-    this.playNum = 0;
-    this.audioBackUp = new Audio();
-    this.audioBackUp.controls = true;
 
-    this.audio = new Audio();
-    this.audio.controls = true;
+    this.audio = _.map(new Array(num || 10), () => {
+      return new Audio();
+    });
+    
+    this.setAttr("controls", true);
     this.SilentMode = false;
 
     this.setSrc(src);
-    // 播放一次后，说明已经缓存好了
-    this.audio.onplay = () =>{
-      this.isPreload = true;
-    }
-    this.audioBackUp.onplay = () =>{
-      this.isPreload = true;
-    }
     
-    this.audio.onended = () => {
-      this.ended();
-    }
-    this.audioBackUp.onended = () => {
-      this.ended();
-    }
+    this.initEvent();
+  }
+  setAttr(attr, val){
+    _.forEach(this.audio, audio => {
+      audio[attr] = val;
+    })
+  }
+  setLoop(loop){
+    this.setAttr("loop", loop);
+  }
+  initEvent(){
+    // 播放一次后，说明已经缓存好了
+    _.forEach(this.audio, audio => {
+      audio.onplay = () =>{
+        this.isPreload = true;
+      }
+      audio.onended = () => {
+        this.ended();
+      }
+    })
+  }
+  getAudio(){
+    return _.find(this.audio, audio => audio.paused);
   }
   preload(){
     if(this.isPreload){
       // 已经缓存过了
       return;
     }
-    this.audio.play();
-    this.audioBackUp.play();
+    _.forEach(this.audio, audio=> audio.play())
     setTimeout(() => {
       try {
         this.pause();
@@ -54,21 +64,19 @@ export class GameAudio {
     }, this.preloadTime * 1000);
   }
   setSrc(src){
-    this.audio.src = src;
-    this.audioBackUp.src = src;
+    _.forEach(this.audio, audio => {
+      audio.src = src;
+    })
   }
   play(){
     if(this.SilentMode){
       // 静音模式
       return;
     }
-    this.playNum++;
-    if (this.playNum % 2 == 0){
-      this.audio.currentTime = this.preloadTime;
-      this.audio.play();
-    }else{
-      this.audioBackUp.currentTime = this.preloadTime;
-      this.audioBackUp.play();
+    var audio = this.getAudio();
+    if(audio){
+      audio.currentTime = 0;
+      audio.play();
     }
   }
   replay(){
@@ -76,22 +84,14 @@ export class GameAudio {
       // 静音模式
       return;
     }
-    this.playNum++;
-    if (this.playNum % 2 == 0){
-      if(this.audio.currentTime < this.preloadTime){
-        this.audio.currentTime = this.preloadTime;
-      }
-      this.audio.play();
-    }else{
-      if(this.audioBackUp.currentTime < this.preloadTime){
-        this.audioBackUp.currentTime = this.preloadTime;
-      }
-      this.audioBackUp.play();
+    var audio = this.getAudio();
+    if(audio){
+      audio.currentTime = 0;
+      audio.play();
     }
   }
   pause(){
-    this.audio.pause();
-    this.audioBackUp.pause();
+    _.forEach(this.audio, audio => audio.pause())
   }
   ended(){
     this.onEnd();
@@ -103,79 +103,4 @@ export class GameAudio {
    * @memberof GameAudio
    */
   onEnd(){}
-}
-/**
- * 单个音频
- * 
- * @export
- * @class SingleAudio
- */
-export class SingleAudio{
-  constructor(src){
-    this.preloadTime = 1;
-    this.isPreload = false;
-    this.playNum = 0;
-    this.audio = new Audio();
-    this.audio.controls = true;
-    this.SilentMode = false;
-
-    this.setSrc(src);
-    // 播放一次后，说明已经缓存好了
-    this.audio.onplay = () =>{
-      this.isPreload = true;
-    }
-    
-    this.audio.onended = () => {
-      this.ended();
-    }
-  }
-  preload(){
-    if(this.isPreload){
-      // 已经缓存过了
-      return;
-    }
-    this.audio.play();
-    setTimeout(() => {
-      try {
-        this.pause();
-      }catch(e) {
-        console.error('audio preload error');
-      }
-    }, this.preloadTime * 1000);
-  }
-  setSrc(src){
-    this.audio.src = src;
-  }
-  play(){
-    if(this.SilentMode){
-      // 静音模式
-      return;
-    }
-    this.audio.currentTime = this.preloadTime;
-    this.audio.play();
-  }
-  replay(){
-    if(this.SilentMode){
-      // 静音模式
-      return;
-    }
-    if(this.audio.currentTime < this.preloadTime){
-      this.audio.currentTime = this.preloadTime;
-    }
-    this.audio.play();
-  }
-  pause(){
-    this.audio.pause();
-  }
-  ended(){
-    this.onEnd();
-  }
-  /**
-   * 这个函数可以自定义的
-   * 用于监听播放完成后的事件
-   * 
-   * @memberof GameAudio
-   */
-  onEnd(){}
-
 }

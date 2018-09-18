@@ -1,8 +1,22 @@
 let path = require("path");
-let CleanWebpackPlugin = require('clean-webpack-plugin');
+let _dirname = path.resolve(__dirname, "./");
+let _context = path.resolve(__dirname, "../");
+
+let CleanWebpackPlugin = require("clean-webpack-plugin");
 let HtmlWebpackPlugin = require("Html-webpack-plugin");
+let CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+  context: _context,
+  entry: {
+    fan: _context + "/front-src/entries/Fan/index.js",
+    notfan: _context + "/front-src/entries/NotFan/index.js",
+  },
+  output: {
+    path: _context + "/dist/",
+    filename: "[name].entry.js",
+    publicPath: "",
+  },
   mode: "development",
   module: {
     rules: [{
@@ -20,6 +34,11 @@ module.exports = {
         loader: "css-loader",
       }, {
         loader: "postcss-loader",
+        options: {
+          config: {
+            path: _dirname
+          }
+        }
       }]
     }, {
       test: /\.less$/,
@@ -33,22 +52,27 @@ module.exports = {
         }
       }, {
         loader: "postcss-loader",
+        options: {
+          config: {
+            path: _dirname
+          }
+        }
       }, {
-        loader: path.resolve(__dirname, "./customize-loader/rpx-loader.js"),
+        loader: _dirname + "/customize-loader/rpx-loader.js",
         options: {
           psdQuery: 750,
           unitQuery: "rpx",
-          numFixed: 5,
+          numFixed: 4,
         },
       }, {
         loader: "less-loader",
         options: {}
       }]
     }, {
-      test: /\.(png|jpg|jpeg|txt|mp3|wav)$/,
+      test: /\.(png|jpg|jpeg|gif|txt|mp3|wav)$/,
       use: [
         {
-          loader: 'url-loader',
+          loader: "url-loader",
           options: {
             limit: 1024
           }
@@ -58,7 +82,7 @@ module.exports = {
       test: /\.html$/,
       use: [
         {
-          loader: 'html-loader',
+          loader: "html-loader",
           options: {
             // 自定义css-mudole需要使用
             // lib/css-module-aisle.js
@@ -72,20 +96,27 @@ module.exports = {
     extensions: [".js"],
   },
   externals: {
-    jquery: 'jQuery',
+    wx: "wx"
   },
   plugins: [
-    new CleanWebpackPlugin([__dirname+"/dist/"], {
-      root: '', // An absolute path for the root  of webpack.config.js
+    new CleanWebpackPlugin([_context + "/dist/**/*"], {
+      root: _context, // An absolute path for the root  of webpack.config.js
       verbose: true, // Write logs to console.
       dry: false, // Do not delete anything, good for testing.
     }),
     new HtmlWebpackPlugin({
-      title: "来vipJr学习的理由",
-      chunks: ["index"],
+      title: "球迷版",
+      chunks: ["fan"],
       hash: true,
-      filename: "../index.html",
-      template: './front-src/routes-entry-html/index.html'
+      filename: "fan.html",
+      template: _context + "/front-src/routes-entry-html/index.html",
     }),
+    new HtmlWebpackPlugin({
+      title: "非球迷版",
+      chunks: ["notfan"],
+      hash: true,
+      filename: "index.html",
+      template: _context + "/front-src/routes-entry-html/index.html",
+    })
   ],
 }

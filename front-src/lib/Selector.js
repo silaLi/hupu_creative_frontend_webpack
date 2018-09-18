@@ -29,7 +29,7 @@ export class Selector {
 
 		this.elem.innerHTML = ''
 		if (this.elem) {
-			var html = '';
+			// var html = '';
 			// 为什么不用innerHTML，因为在IE9的时候会不能插入这标签
 			for (var i = 0; i < options.length; i++) {
 				options[i].value = options[i].value || options[i].text;

@@ -1,25 +1,30 @@
+let path = require("path");
+let _dirname = path.resolve(__dirname, "./");
+let _context = path.resolve(__dirname, "../");
+
 let utils = require("./lib/util");
-let CleanWebpackPlugin = require('clean-webpack-plugin');
 let base = require("./webpack.base.js");
 let ips = utils.getIps();
+console.log(ips);
 
 module.exports = {
-  entry: {
-    index: "./front-src/entries/index/index.test.js",
-  },
   ...base,
-  output: {
-    path: __dirname + "/dist/deploy/", // 输出文件的保存路径
-    filename: "[name].entry.js", // 输出文件的名称
-    publicPath: "./deploy/",
+  entry: {
+    ...base.entry,
+    fan: _context + "/front-src/entries/Fan/index.test.js",
+    notfan: _context + "/front-src/entries/NotFan/index.test.js",
   },
   devtool: '#source-map',
+  watchOptions: {
+    ignored: /node_modules/, 
+    aggregateTimeout: 300,
+    poll: 1000
+  },
   devServer: {
     contentBase: "dist",
     compress: true,
     inline: true,
-    open: true,
-    port: 8070,
+    port: 8094,
     allowedHosts: [
       "local.vipabc.com",
       "local.vipjr.com",
@@ -27,7 +32,13 @@ module.exports = {
       "stagelp.vipjr.com",
     ],
     host: "0.0.0.0",
-    publicPath: "/deploy",
+    publicPath: "",
+    before(app){
+      app.get('/log', function(req, res) {
+        console.log(req.originalUrl)
+        res.json({ custom: 'response' });
+      });
+    }
     // historyApiFallback: true,
     // proxy: {
     //   context: ["/ajax/sms_authcode", "/xbox/ajax"],
